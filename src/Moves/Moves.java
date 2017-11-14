@@ -24,6 +24,7 @@ public class Moves {
 		}
 		return list;	
 	}
+	//Kings possible moves
 	public String possibleA(int i) {
 		String list = "";
 		String oldPiece;
@@ -50,8 +51,41 @@ public class Moves {
 		}
 		return list;
 	}
+	//Queens possible moves
 	public String possibleQ(int i) {
 		String list = "";
+		String oldPiece;
+		int row = i/8;
+		int col = i%8;
+		int temp = 1;
+		for (int j = -1; j <= 1; j++){
+			for (int k = -1; k <= 1; k++){
+				try{
+					while(" ".equals(chessBoard.board[row+temp*j][col+temp*k])){
+						oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+						chessBoard.board[row][col] = " ";
+						chessBoard.board[row+temp*j][col+temp*k] = "Q";
+						if(kingSafe()) {
+							list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+						}
+						chessBoard.board[row][col] = "Q";
+						chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
+						temp++;
+					}
+					if(Character.isLowerCase(chessBoard.board[row+temp*j][col+temp*k].charAt(0))){
+						oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+						chessBoard.board[row][col] = " ";
+						chessBoard.board[row+temp*j][col+temp*k] = "Q";
+						if(kingSafe()) {
+							list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+						}
+						chessBoard.board[row][col] = "Q";
+						chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
+					}
+				}catch(Exception e) {}
+				temp = 1;
+			}
+		}
 		return list;
 	}
 	public String possibleB(int i) {
