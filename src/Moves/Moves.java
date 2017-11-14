@@ -57,49 +57,150 @@ public class Moves {
 		String oldPiece;
 		int row = i/8;
 		int col = i%8;
+		//temp variable is so the queen can move as long as she want in one direction
 		int temp = 1;
+		//the 9 possible ways a queen can move
+		//4 diagonals and then one north, east, west and south
 		for (int j = -1; j <= 1; j++){
 			for (int k = -1; k <= 1; k++){
-				try{
-					while(" ".equals(chessBoard.board[row+temp*j][col+temp*k])){
-						oldPiece = chessBoard.board[row+temp*j][col+temp*k];
-						chessBoard.board[row][col] = " ";
-						chessBoard.board[row+temp*j][col+temp*k] = "Q";
-						if(kingSafe()) {
-							list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+				if(j != 0 || k != 0){
+					try{
+						while(" ".equals(chessBoard.board[row+temp*j][col+temp*k])){
+							oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+							chessBoard.board[row][col] = " ";
+							chessBoard.board[row+temp*j][col+temp*k] = "Q";
+							if(kingSafe()) {
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+							}
+							chessBoard.board[row][col] = "Q";
+							chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
+							temp++;
 						}
-						chessBoard.board[row][col] = "Q";
-						chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
-						temp++;
-					}
-					if(Character.isLowerCase(chessBoard.board[row+temp*j][col+temp*k].charAt(0))){
-						oldPiece = chessBoard.board[row+temp*j][col+temp*k];
-						chessBoard.board[row][col] = " ";
-						chessBoard.board[row+temp*j][col+temp*k] = "Q";
-						if(kingSafe()) {
-							list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+						if(Character.isLowerCase(chessBoard.board[row+temp*j][col+temp*k].charAt(0))){
+							oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+							chessBoard.board[row][col] = " ";
+							chessBoard.board[row+temp*j][col+temp*k] = "Q";
+							if(kingSafe()) {
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+							}
+							chessBoard.board[row][col] = "Q";
+							chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
 						}
-						chessBoard.board[row][col] = "Q";
-						chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
-					}
-				}catch(Exception e) {}
-				temp = 1;
+					}catch(Exception e) {}
+					temp = 1;
+				}
 			}
 		}
 		return list;
 	}
+	//Possible Bishop moves 
+	//Almost the same as the queen
 	public String possibleB(int i) {
 		String list = "";
+		String oldPiece;
+		int row = i/8;
+		int col = i%8;
+		//temp variable is so the bishop can move as long as she want in the diagonal directions
+		int temp = 1;
+		//the 4 possible ways a bishop can move
+		//4 diagonals
+		for (int j = -1; j <= 1; j+=2){
+			for (int k = -1; k <= 1; k+=2){
+					try{
+						while(" ".equals(chessBoard.board[row+temp*j][col+temp*k])){
+							oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+							chessBoard.board[row][col] = " ";
+							chessBoard.board[row+temp*j][col+temp*k] = "B";
+							if(kingSafe()) {
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+							}
+							chessBoard.board[row][col] = "B";
+							chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
+							temp++;
+						}
+						if(Character.isLowerCase(chessBoard.board[row+temp*j][col+temp*k].charAt(0))){
+							oldPiece = chessBoard.board[row+temp*j][col+temp*k];
+							chessBoard.board[row][col] = " ";
+							chessBoard.board[row+temp*j][col+temp*k] = "B";
+							if(kingSafe()) {
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+							}
+							chessBoard.board[row][col] = "B";
+							chessBoard.board[row+temp*j][col+temp*k] = oldPiece;
+						}
+					}catch(Exception e) {}
+					temp = 1;
+			}
+		}
 		return list;
 	}
+	//Possible Knight moves
 	public String possibleK(int i) {
 		String list = "";
 		return list;
 	}
+	//Possible Rock moves
 	public String possibleR(int i) {
 		String list = "";
+		String oldPiece;
+		int row = i/8;
+		int col = i%8;
+		int temp = 1;
+		for (int j = -1; j <= 1; j+=2){
+			//Horizontal
+			try{
+				while(" ".equals(chessBoard.board[row][col+temp*j])){
+					oldPiece = chessBoard.board[row][col+temp*j];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row][col+temp*j] = "R";
+					if(kingSafe()) {
+						list = list+row+col+(row)+(col+temp*j)+oldPiece;
+					}
+					chessBoard.board[row][col] = "R";
+					chessBoard.board[row][col+temp*j] = oldPiece;
+					temp++;
+				}
+				if(Character.isLowerCase(chessBoard.board[row][col+temp*j].charAt(0))){
+					oldPiece = chessBoard.board[row][col+temp*j];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row][col+temp*j] = "R";
+					if(kingSafe()) {
+						list = list+row+col+(row)+(col+temp*j)+oldPiece;
+					}
+					chessBoard.board[row][col] = "R";
+					chessBoard.board[row][col+temp*j] = oldPiece;
+				}
+			}catch(Exception e) {}
+			temp = 1;
+			//Vertical
+			try{
+				while(" ".equals(chessBoard.board[row+temp*j][col])){
+					oldPiece = chessBoard.board[row+temp*j][col];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row+temp*j][col] = "R";
+					if(kingSafe()) {
+						list = list+row+col+(row+temp*j)+(col)+oldPiece;
+					}
+					chessBoard.board[row][col] = "R";
+					chessBoard.board[row+temp*j][col] = oldPiece;
+					temp++;
+				}
+				if(Character.isLowerCase(chessBoard.board[row+temp*j][col].charAt(0))){
+					oldPiece = chessBoard.board[row+temp*j][col];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row+temp*j][col] = "R";
+					if(kingSafe()) {
+						list = list+row+col+(row+temp*j)+(col)+oldPiece;
+					}
+					chessBoard.board[row][col] = "R";
+					chessBoard.board[row+temp*j][col] = oldPiece;
+				}
+			}catch(Exception e) {}
+			temp = 1;
+		}
 		return list;
 	}
+	//Possible Pawn moves
 	public String possibleP(int i) {
 		String list = "";
 		return list;
