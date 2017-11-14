@@ -137,6 +137,39 @@ public class Moves {
 	//Possible Knight moves
 	public String possibleK(int i) {
 		String list = "";
+		String oldPiece;
+		int row = i/8;
+		int col = i%8;
+		for (int j = -1; j <= 1; j+=2){
+			for (int k = -1; k <= 1; k+=2){
+				//2 horizontal 1 vertical
+				try{
+					if (Character.isLowerCase(chessBoard.board[row+j][col+k*2].charAt(0)) || " ".equals(chessBoard.board[row+j][col+k*2])){
+						oldPiece = chessBoard.board[row+j][col+k*2];
+						chessBoard.board[row][col] = " ";
+						chessBoard.board[row+j][col+k*2] = "K";
+						if(kingSafe()) {
+							list = list+row+col+(row+j)+(col+k*2)+oldPiece;
+						}
+						chessBoard.board[row][col] = "K";
+						chessBoard.board[row+j][col+k*2] = oldPiece;
+					}	
+				}catch(Exception e) {}
+				//1 horizontal 2 vertical
+				try{
+					if (Character.isLowerCase(chessBoard.board[row+j*2][col+k].charAt(0)) || " ".equals(chessBoard.board[row+j*2][col+k])){
+						oldPiece = chessBoard.board[row+j*2][col+k];
+						chessBoard.board[row][col] = " ";
+						chessBoard.board[row+j*2][col+k] = "K";
+						if(kingSafe()) {
+							list = list+row+col+(row+j*2)+(col+k)+oldPiece;
+						}
+						chessBoard.board[row][col] = "K";
+						chessBoard.board[row+j*2][col+k] = oldPiece;
+					}	
+				}catch(Exception e) {}
+			}		
+		}
 		return list;
 	}
 	//Possible Rock moves
