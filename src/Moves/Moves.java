@@ -4,6 +4,7 @@ import Board.ChessBoard;
 public class Moves {
 	ChessBoard chessBoard = new ChessBoard();
 	
+	@SuppressWarnings("static-access")
 	public String possibleMoves(){
 		String list = "";
 		for (int i = 0; i < 64; i++) {
@@ -25,6 +26,7 @@ public class Moves {
 		return list;	
 	}
 	//Kings possible moves
+	@SuppressWarnings("static-access")
 	public String possibleA(int i) {
 		String list = "";
 		String oldPiece;
@@ -52,6 +54,7 @@ public class Moves {
 		return list;
 	}
 	//Queens possible moves
+	@SuppressWarnings("static-access")
 	public String possibleQ(int i) {
 		String list = "";
 		String oldPiece;
@@ -95,6 +98,7 @@ public class Moves {
 	}
 	//Possible Bishop moves 
 	//Almost the same as the queen
+	@SuppressWarnings("static-access")
 	public String possibleB(int i) {
 		String list = "";
 		String oldPiece;
@@ -135,6 +139,7 @@ public class Moves {
 		return list;
 	}
 	//Possible Knight moves
+	@SuppressWarnings("static-access")
 	public String possibleK(int i) {
 		String list = "";
 		String oldPiece;
@@ -173,6 +178,7 @@ public class Moves {
 		return list;
 	}
 	//Possible Rock moves
+	@SuppressWarnings("static-access")
 	public String possibleR(int i) {
 		String list = "";
 		String oldPiece;
@@ -239,12 +245,14 @@ public class Moves {
 		return list;
 	}
 	
+	@SuppressWarnings("static-access")
 	public boolean kingSafe() {
 		//Bishop/Queen
 		int temp = 1;
 		for (int i = -1; i <= 1; i+=2){
 			for (int j = -1; j <= 1; j+=2){
 				try{
+					//all four diagonals
 					while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j])){temp++;}
 					if ("b".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j]) ||
 							"q".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j])){
@@ -254,9 +262,11 @@ public class Moves {
 				temp = 1;
 			}
 		}
+		
 		//Rock/Queen
 		for (int i = -1; i <= 1; i+=2){
 			try{
+				//Horizontal
 				while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i])){temp++;}
 				if ("r".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i]) ||
 						"q".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i])){
@@ -265,6 +275,7 @@ public class Moves {
 			}catch(Exception e) {}
 			temp = 1;
 			try{
+				//Vertical
 				while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8])){temp++;}
 				if ("r".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8]) ||
 						"q".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8])){
@@ -273,34 +284,42 @@ public class Moves {
 			}catch(Exception e) {}
 			temp = 1;
 		}
+		
 		//Knight
 		for (int i = -1; i <= 1; i+=2){
 			for (int j = -1; j <= 1; j+=2){
 				try{
+					//two cols one row
 					if ("k".equals(chessBoard.board[chessBoard.kingPositionC/8+i][chessBoard.kingPositionC%8+j*2])){
 						return false;
 					}
 				}catch(Exception e) {}
 				try{
+					//two rows one col
 					if ("k".equals(chessBoard.board[chessBoard.kingPositionC/8+i*2][chessBoard.kingPositionC%8+j])){
 						return false;
 					}
 				}catch(Exception e) {}
 			}
 		}
+		
 		//Pawn
+		//Don't check if king is in one of the to last lines.
 		if(chessBoard.kingPositionC >= 16){
 			try{
+				//left
 				if ("p".equals(chessBoard.board[chessBoard.kingPositionC/8-1][chessBoard.kingPositionC%8-1])){
 					return false;
 				}
 			}catch(Exception e) {}
 			try{
+				//right
 				if ("p".equals(chessBoard.board[chessBoard.kingPositionC/8-1][chessBoard.kingPositionC%8+1])){
 					return false;
 				}
 			}catch(Exception e) {}
 		}
+		
 		//King
 		for (int i = -1; i <= 1; i++){
 			for (int j = -1; j <= 1; j++){
