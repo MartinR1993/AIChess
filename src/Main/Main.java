@@ -1,11 +1,13 @@
 package Main;
 import Board.ChessBoard;
+import Moves.AlphaBetaPruning;
 import Moves.Moves;
 
 public class Main {
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		ChessBoard chessboard = new ChessBoard();
+		AlphaBetaPruning ab = new AlphaBetaPruning();
 		Moves moves = new Moves();
 		//Bigger case king position
 		while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][chessboard.kingPositionC%8])) {
@@ -17,8 +19,8 @@ public class Main {
 		}
 		//do and undo moves
 		moves.makeMove("6050 ");
-		moves.undoMove("6050 ");
-		System.out.println(moves.possibleMoves());
+//		moves.undoMove("6050 ");
+		System.out.println("Possible moves: \n" + moves.possibleMoves());
 		chessboard.drawBoard();
 	}
 }
