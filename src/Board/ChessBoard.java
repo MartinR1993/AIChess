@@ -1,5 +1,7 @@
 package Board;
 
+import java.util.Arrays;
+
 public class ChessBoard {
 
 	public static String board[][] = {
@@ -16,4 +18,12 @@ public class ChessBoard {
 	public static int kingPositionC;
 	//Lowercase king
 	public static int kingPositionL;
+	
+	public void drawBoard(){
+		System.out.println("  0  1  2  3  4  5  6  7");
+		for (int i = 0; i < 8; i++) {
+			//java.util.Arrays sets up the print nice
+			System.out.println(i + Arrays.toString(board[i]));
+		}
+	}
 }

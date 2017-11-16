@@ -5,6 +5,38 @@ public class Moves {
 	ChessBoard chessBoard = new ChessBoard();
 	
 	@SuppressWarnings("static-access")
+	public void makeMove(String move) {
+		//regular moves
+		if(move.charAt(4) != 'P'){
+			//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4)
+			chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
+			chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
+		}
+		//pawn promotion
+		else{
+			//char : column1, column2, captured piece, new-piece, P
+			chessBoard.board[1][Character.getNumericValue(move.charAt(0))] = " ";
+			chessBoard.board[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(3)); 
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	public void undoMove(String move) {
+		//regular moves
+		if(move.charAt(4) != 'P'){
+			//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3),Captured-piece(4)
+			chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
+			chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
+		}
+		//pawn promotion
+		else{
+			//char : column1, column2, captured piece, new-piece, P
+			chessBoard.board[1][Character.getNumericValue(move.charAt(0))] = " ";
+			chessBoard.board[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(2)); 
+		}
+	}
+	
+	@SuppressWarnings("static-access")
 	public String possibleMoves(){
 		String list = "";
 		for (int i = 0; i < 64; i++) {
