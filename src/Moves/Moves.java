@@ -2,8 +2,8 @@ package Moves;
 import Board.ChessBoard;
 
 public class Moves {
-
 	ChessBoard chessBoard = new ChessBoard();
+	
 	public String possibleMoves(){
 		String list = "";
 		for (int i = 0; i < 64; i++) {
@@ -240,6 +240,79 @@ public class Moves {
 	}
 	
 	public boolean kingSafe() {
+		//Bishop/Queen
+		int temp = 1;
+		for (int i = -1; i <= 1; i+=2){
+			for (int j = -1; j <= 1; j+=2){
+				try{
+					while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j])){temp++;}
+					if ("b".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j]) ||
+							"q".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8+temp*j])){
+						return false;
+					}
+				}catch(Exception e) {}
+				temp = 1;
+			}
+		}
+		//Rock/Queen
+		for (int i = -1; i <= 1; i+=2){
+			try{
+				while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i])){temp++;}
+				if ("r".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i]) ||
+						"q".equals(chessBoard.board[chessBoard.kingPositionC/8][chessBoard.kingPositionC%8+temp*i])){
+					return false;
+				}
+			}catch(Exception e) {}
+			temp = 1;
+			try{
+				while(" ".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8])){temp++;}
+				if ("r".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8]) ||
+						"q".equals(chessBoard.board[chessBoard.kingPositionC/8+temp*i][chessBoard.kingPositionC%8])){
+					return false;
+				}
+			}catch(Exception e) {}
+			temp = 1;
+		}
+		//Knight
+		for (int i = -1; i <= 1; i+=2){
+			for (int j = -1; j <= 1; j+=2){
+				try{
+					if ("k".equals(chessBoard.board[chessBoard.kingPositionC/8+i][chessBoard.kingPositionC%8+j*2])){
+						return false;
+					}
+				}catch(Exception e) {}
+				try{
+					if ("k".equals(chessBoard.board[chessBoard.kingPositionC/8+i*2][chessBoard.kingPositionC%8+j])){
+						return false;
+					}
+				}catch(Exception e) {}
+			}
+		}
+		//Pawn
+		if(chessBoard.kingPositionC >= 16){
+			try{
+				if ("p".equals(chessBoard.board[chessBoard.kingPositionC/8-1][chessBoard.kingPositionC%8-1])){
+					return false;
+				}
+			}catch(Exception e) {}
+			try{
+				if ("p".equals(chessBoard.board[chessBoard.kingPositionC/8-1][chessBoard.kingPositionC%8+1])){
+					return false;
+				}
+			}catch(Exception e) {}
+		}
+		//King
+		for (int i = -1; i <= 1; i++){
+			for (int j = -1; j <= 1; j++){
+				if(i != 0 || j != 0){
+					try{
+						if ("a".equals(chessBoard.board[chessBoard.kingPositionC/8+i][chessBoard.kingPositionC%8+j])){
+							return false;
+						}
+					}catch(Exception e) {}
+				}
+			}
+		}
 		return true;
 	}
 }
