@@ -240,8 +240,87 @@ public class Moves {
 		return list;
 	}
 	//Possible Pawn moves
+	@SuppressWarnings("static-access")
 	public String possibleP(int i) {
 		String list = "";
+		String oldPiece;
+		int row = i/8;
+		int col = i%8;
+		for (int j = -1; j <= 1; j+=2){
+			try{ 
+				//Captures right
+				if (Character.isLowerCase(chessBoard.board[row-1][col+j].charAt(0)) && i >= 16){
+					oldPiece = chessBoard.board[row-1][col+j];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row-1][col+j] = "P";
+					if(kingSafe()) {
+						list = list+row+col+(row-1)+(col+j)+oldPiece;
+					}
+					chessBoard.board[row][col] = "P";
+					chessBoard.board[row-1][col+j] = oldPiece;
+				}
+			}catch(Exception e) {}
+			try{ 
+				//Promotion and capture
+				if (Character.isLowerCase(chessBoard.board[row-1][col+1].charAt(0)) && i < 16){
+					String[] temp = {"Q","R","B","K"};
+					for (int k = 0; k < 4 ; k++) {
+						oldPiece = chessBoard.board[row-1][col+j];
+						chessBoard.board[row][col] = " ";
+						chessBoard.board[row-1][col+j] = temp[k];
+						if(kingSafe()) {
+							//column1, column2, captured-piece, new-piece
+							list = list+col+(col+j)+oldPiece+temp[k]+"P";
+						}
+						chessBoard.board[row][col] = "P";
+						chessBoard.board[row-1][col+j] = oldPiece;
+					}
+				}
+			}catch(Exception e) {}
+		}
+		try{ 
+			//Move one forward
+			if (" ".equals(chessBoard.board[row-1][col]) && i >= 16){
+				oldPiece = chessBoard.board[row-1][col];
+				chessBoard.board[row][col] = " ";
+				chessBoard.board[row-1][col] = "P";
+				if(kingSafe()) {
+					list = list+row+col+(row-1)+(col)+oldPiece;
+				}
+				chessBoard.board[row][col] = "P";
+				chessBoard.board[row-1][col] = oldPiece;
+			}
+		}catch(Exception e) {}
+		try{ 
+			//Promotion, no capture
+			if (" ".equals(chessBoard.board[row-1][col]) && i < 16){
+				String[] temp = {"Q","R","B","K"};
+				for (int k = 0; k < 4 ; k++) {
+					oldPiece = chessBoard.board[row-1][col];
+					chessBoard.board[row][col] = " ";
+					chessBoard.board[row-1][col] = temp[k];
+					if(kingSafe()) {
+						//column1, column2, captured-piece, new-piece
+						list = list+col+(col)+oldPiece+temp[k]+"P";
+					}
+					chessBoard.board[row][col] = "P";
+					chessBoard.board[row-1][col] = oldPiece;
+				}
+			}
+		}catch(Exception e) {}
+		try{ 
+			//Move two forward
+			if (" ".equals(chessBoard.board[row-1][col]) && " ".equals(chessBoard.board[row-2][col]) && i >= 48){
+				oldPiece = chessBoard.board[row-2][col];
+				chessBoard.board[row][col] = " ";
+				chessBoard.board[row-2][col] = "P";
+				if(kingSafe()) {
+					list = list+row+col+(row-2)+(col)+oldPiece;
+				}
+				chessBoard.board[row][col] = "P";
+				chessBoard.board[row-2][col] = oldPiece;
+			}
+		}catch(Exception e) {}
 		return list;
 	}
 	
