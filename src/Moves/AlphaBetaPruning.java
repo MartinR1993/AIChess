@@ -13,7 +13,7 @@ public class AlphaBetaPruning {
 		String list = moves.possibleMoves();
 
 		if(depth == 0 || list.length() == 0){
-			return move+(r.rating()); //*(player*2-1)
+			return move+(r.rating(list.length(), depth)); //*(player*2-1)
 		}
 		//sort later
 		//either 1 or 0
