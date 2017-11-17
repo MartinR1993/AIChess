@@ -11,6 +11,9 @@ public class Moves {
 			//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4)
 			chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
 			chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
+			if("A".equals(chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))])) {
+				chessBoard.kingPositionC = 8*Character.getNumericValue(move.charAt(2))+Character.getNumericValue(move.charAt(3));
+			}
 		}
 		//pawn promotion
 		else{
@@ -27,6 +30,9 @@ public class Moves {
 			//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3),Captured-piece(4)
 			chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
 			chessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
+			if("A".equals(chessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))])) {
+				chessBoard.kingPositionC = 8*Character.getNumericValue(move.charAt(0))+Character.getNumericValue(move.charAt(1));
+			}
 		}
 		//pawn promotion
 		else{

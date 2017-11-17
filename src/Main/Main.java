@@ -17,9 +17,11 @@ public class Main {
 		while(!"a".equals(chessboard.board[chessboard.kingPositionL/8][chessboard.kingPositionL%8])) {
 			chessboard.kingPositionL++;
 		}
+		moves.makeMove(ab.alphaBeta(4, 1000000, -1000000, "", 0));
 		//do and undo moves
-		moves.makeMove("6050 ");
+//		moves.makeMove("6050 ");
 //		moves.undoMove("6050 ");
+//		ab.flipBoard();
 		System.out.println("Possible moves: \n" + moves.possibleMoves());
 		chessboard.drawBoard();
 	}
