@@ -5,8 +5,7 @@ import Moves.AlphaBetaPruning;
 import Moves.Moves;
 
 public class Rating {
-	Moves moves = new Moves();
-	 static int pawnBoard[][]={
+	 		static int pawnBoard[][]={
 		        { 0,  0,  0,  0,  0,  0,  0,  0},
 		        {50, 50, 50, 50, 50, 50, 50, 50},
 		        {10, 10, 20, 30, 30, 20, 10, 10},
@@ -69,10 +68,11 @@ public class Rating {
 		        {-30,-10, 20, 30, 30, 20,-10,-30},
 		        {-30,-30,  0,  0,  0,  0,-30,-30},
 		        {-50,-30,-30,-30,-30,-30,-30,-50}};
-	public int rating(int list, int depth){
+		    
+	public static int rating(int list, int depth){
 		int counter = 0;
 		//White
-		int material=rateMaterial();
+		int material = rateMaterial();
 		counter += rateAttack();
 		counter += material;
 		counter += rateMaterial();
@@ -80,7 +80,7 @@ public class Rating {
 		counter += ratePositional(material);
 		AlphaBetaPruning.flipBoard();
 		//Black
-		material=rateMaterial();
+		material = rateMaterial();
 		counter -= rateAttack();
 		counter -= material;
 		counter -= rateMaterial();
@@ -89,30 +89,30 @@ public class Rating {
 		AlphaBetaPruning.flipBoard();
 		return -(counter+depth*50);
 	}
-	public int rateAttack(){
+	public static int rateAttack(){
 		int counter = 0;
 		int tempPositionC = ChessBoard.kingPositionC;
 		for (int i = 0; i < 64; i++) {
 			switch (ChessBoard.board[i/8][i%8]) {
-			case "P": {ChessBoard.kingPositionC = i; if(!moves.kingSafe()){counter -= 64;}}
+			case "P": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 64;}}
 				break;
-			case "K": {ChessBoard.kingPositionC = i; if(!moves.kingSafe()){counter -= 300;}}
+			case "K": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 300;}}
 				break;
-			case "B": {ChessBoard.kingPositionC = i; if(!moves.kingSafe()){counter -= 300;}}
+			case "B": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 300;}}
 				break;
-			case "R": {ChessBoard.kingPositionC = i; if(!moves.kingSafe()){counter -= 500;}}
+			case "R": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 500;}}
 				break;
-			case "Q": {ChessBoard.kingPositionC = i; if(!moves.kingSafe()){counter -= 900;}}
+			case "Q": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 900;}}
 				break;
 			}
 		}
 		ChessBoard.kingPositionC = tempPositionC;
-		if(!moves.kingSafe()){
+		if(!Moves.kingSafe()){
 			counter -= 200;
 		}
 		return counter/2;
 	}
-	public int rateMaterial(){
+	public static int rateMaterial(){
 		int counter = 0;
 		for (int i = 0; i < 64; i++) {
 			switch (ChessBoard.board[i/8][i%8]) {
@@ -126,20 +126,18 @@ public class Rating {
 				break;
 			case "Q": counter += 900;
 				break;
-			case "A": counter += 10000;
-				break;
 			}
 		}
 		return counter;
 	}
-	public int rateMoveability(int listLength, int depth, int material){
+	public static int rateMoveability(int listLength, int depth, int material){
 		int counter = 0;
 		//5 points per move
 		counter += listLength;
 		//checkmate or stalemate
 		if(listLength==0) {
 			//if checkmate/win
-			if(!moves.kingSafe()){
+			if(!Moves.kingSafe()){
 				counter += -200000*depth;
 			} 
 			//if stalemate/tie
@@ -149,7 +147,7 @@ public class Rating {
 		}
 		return counter;
 	}
-	public int ratePositional(int material){
+	public static int ratePositional(int material){
 		int counter=0;
         for (int i=0;i<64;i++) {
             switch (ChessBoard.board[i/8][i%8]) {
@@ -163,8 +161,8 @@ public class Rating {
                     break;
                 case "Q": counter+=queenBoard[i/8][i%8];
                     break;
-                case "A": if (material>=1750) {counter+=kingMidBoard[i/8][i%8]; counter+=moves.possibleA(ChessBoard.kingPositionC).length()*10;} else
-                {counter+=kingEndBoard[i/8][i%8]; counter+=moves.possibleA(ChessBoard.kingPositionC).length()*30;}
+                case "A": if (material>=1750) {counter+=kingMidBoard[i/8][i%8]; counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*10;} else
+                {counter+=kingEndBoard[i/8][i%8]; counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*30;}
                     break;
             }
         }

@@ -1,28 +1,50 @@
 package Main;
+import java.util.Scanner;
+
 import Board.ChessBoard;
 import Moves.AlphaBetaPruning;
 import Moves.Moves;
 
 public class Main {
-	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
-		ChessBoard chessboard = new ChessBoard();
-		AlphaBetaPruning ab = new AlphaBetaPruning();
-		Moves moves = new Moves();
+		boolean gameOver = false;
+		Scanner scan = new Scanner(System.in);
 		//Bigger case king position
-		while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][chessboard.kingPositionC%8])) {
-			chessboard.kingPositionC++;
+		while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
+			ChessBoard.kingPositionC++;
 		}
 		//Lower case king position
-		while(!"a".equals(chessboard.board[chessboard.kingPositionL/8][chessboard.kingPositionL%8])) {
-			chessboard.kingPositionL++;
+		while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
+			ChessBoard.kingPositionL++;
 		}
-		moves.makeMove(ab.alphaBeta(4, 1000000, -1000000, "", 0));
+		//Introduction
+		System.out.println("Welcome to this chess game, made by Group 1!");
+		System.out.print("You start. ");
+		ChessBoard.drawBoard();
+
+		while(!gameOver){
+			int beta = Integer.MAX_VALUE;
+			int alpha = Integer.MIN_VALUE;
+			System.out.print("Write your move: ");
+			//check på hvilket træk der er lovligt!
+			String move = scan.nextLine();
+			Moves.makeMove(move);
+			ChessBoard.drawBoard();
+			
+			System.out.println("Enemys turn: ");
+			AlphaBetaPruning.flipBoard();
+			String moveEnemy = AlphaBetaPruning.alphaBeta(4, beta, alpha, " ", 0);
+			Moves.makeMove(moveEnemy);
+			System.out.println("Enemys move: " + moveEnemy);
+			AlphaBetaPruning.flipBoard();
+			ChessBoard.drawBoard();
+		}
 		//do and undo moves
 //		moves.makeMove("6050 ");
 //		moves.undoMove("6050 ");
 //		ab.flipBoard();
-		System.out.println("Possible moves: \n" + moves.possibleMoves());
-		chessboard.drawBoard();
+		scan.close();
+		System.out.println("Possible moves: \n" + Moves.possibleMoves());
+		ChessBoard.drawBoard();
 	}
 }
