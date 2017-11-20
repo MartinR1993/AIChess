@@ -13,6 +13,7 @@ public class AlphaBetaPruning {
 			return move+(Rating.rating(list.length(), depth)*(player*2-1)); 
 		}
 		list=Moves.sortMoves(list);
+		
 		//either 1 or 0
 		player=1-player;
 
@@ -40,9 +41,9 @@ public class AlphaBetaPruning {
 			}
 			if(alpha >= beta){
 				if(player == 0){
-					return move+beta;
+					return move + beta;
 				}else{
-					return move+alpha;
+					return move + alpha;
 				}
 			}
 		}
