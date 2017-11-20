@@ -8,22 +8,30 @@ import Moves.Moves;
 
 public class TUI {
 	static boolean gameOver = false;
-	public static Scanner scan = new Scanner(System.in);
+//	public static Scanner scan = new Scanner(System.in);
+	public static int playerTurn;
+	public static int playAsWhite;
 
 	public static void playgame(){
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
-		System.out.print("You start. ");
-		ChessBoard.drawBoard();
-		//The game
-		while(!gameOver){
-			if(endGame()){
-				gameOver = false;
-				break;
-			}
-			userTurn();
-			enemyTurn();
-		}
+		//player as white
+		System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
+		playerAsWhite();
+		//Who starts/the game
+		System.out.println("Do you want to start? \n1. Yes\n2. No");
+		whoStart();
+		
+//		//The game
+//		while(!gameOver){
+//			if(endGame()){
+//				gameOver = true;
+//				break;
+//			}else{
+//			userTurn();
+//			enemyTurn();
+//			}
+//		}
 	}
 	
 	//Convert fx 6444 to e2e4 (also with capping)
@@ -43,8 +51,10 @@ public class TUI {
 	}
 
 	public static void userTurn(){
+		Scanner scan = new Scanner(System.in);
+		playerTurn = 1;
 		check();
-		System.out.println("\nPossible moves: " + Moves.possibleMoves());
+//		System.out.println("\nPossible moves: " + Moves.possibleMoves());
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
 		boolean valid = validMove(move);
@@ -56,24 +66,27 @@ public class TUI {
 			System.out.println("Unvalid move. try again!");
 			userTurn();
 		}
+		playerTurn = 0;
 	}
 	public static void enemyTurn(){
+		playerTurn = 0;
 		int beta = Integer.MAX_VALUE;
 		int alpha = Integer.MIN_VALUE;
-		System.out.println("\nEnemys turn! ");
 		AlphaBetaPruning.flipBoard();
-		if(!endGame()){
-		long startTime = System.currentTimeMillis();
-		String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
-		long endTime = System.currentTimeMillis();
-		Moves.makeMove(moveEnemy);
-		String moveEnemyConverted = enemyMove(moveEnemy);
-		System.out.println("Enemys move: " + moveEnemyConverted);
-		System.out.println("It took " + (endTime-startTime) + " milliseconds!");
-		AlphaBetaPruning.flipBoard();
-		ChessBoard.drawBoard();
+		if(endGame()){
+			gameOver = true;
 		}else{
-			System.out.println("You won!");
+			System.out.println("\nEnemys turn! ");
+			long startTime = System.currentTimeMillis();
+			String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
+			long endTime = System.currentTimeMillis();
+			Moves.makeMove(moveEnemy);
+			String moveEnemyConverted = enemyMove(moveEnemy);
+			System.out.println("Enemys move: " + moveEnemyConverted);
+			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
+			AlphaBetaPruning.flipBoard();
+			playerTurn = 1;
+			ChessBoard.drawBoard();
 		}
 	}
 	
@@ -108,12 +121,22 @@ public class TUI {
 	public static boolean endGame(){
 		if(Moves.possibleMoves().length() == 0){
 			if(!Moves.kingSafe()){
-				System.out.println("\nEnemy says: Checkmate!");
-				return true;
+				if(playerTurn == 1){
+					System.out.println("\nEnemy won by Checkmate!");
+					return true;
+				}else{
+					System.out.println("\nYou won by Checkmate!");
+					return true;
+				}
 			}
 			else{
-				System.out.println("\nEnemy says: Stalemate!");
-				return true;
+				if(playerTurn == 1){
+					System.out.println("\nEnemy put you in Stalemate! Tie!");
+					return true;
+				}else{
+					System.out.println("\nYou put enemy in Stalemate! Tie!");
+					return true;
+				}
 			}
 		}
 		return false;
@@ -122,9 +145,56 @@ public class TUI {
 	//check message
 	public static boolean check(){
 		if(Moves.possibleMoves().length() != 0 && !Moves.kingSafe()){
-			System.out.println("\nEnemy says: Check");
+			System.out.println("\nEnemy says: Check!");
 		}
-		
 		return false;
+	}
+	
+	public static void playerAsWhite(){
+		Scanner scan = new Scanner(System.in);
+		playAsWhite = scan.nextInt();
+		if(playAsWhite == 1 || playAsWhite == 2){
+			if(playAsWhite == 2){
+				AlphaBetaPruning.flipBoard();
+			}
+		}else{
+			System.out.println("Not legal choice. Try again!");
+			playerAsWhite();
+		}
+	}
+	
+	public static void whoStart(){
+		Scanner scan = new Scanner(System.in);
+		int whoStarts = scan.nextInt();
+		if(whoStarts == 1 || whoStarts == 2){
+			if(whoStarts == 1){
+				//user start/the game
+				ChessBoard.drawBoard();
+				while(!gameOver){
+					if(endGame()){
+						gameOver = true;
+						break;
+					}else{
+					userTurn();
+					enemyTurn();
+					}
+				}
+			}else{
+				//enemy start/the game
+				ChessBoard.drawBoard();
+				while(!gameOver){
+					if(endGame()){
+						gameOver = true;
+						break;
+					}else{
+					enemyTurn();
+					userTurn();
+					}
+				}
+			}
+		}else{
+			System.out.println("Not legal choice. Try again!");
+			whoStart();
+		}
 	}
 }
