@@ -8,7 +8,6 @@ import Moves.Moves;
 
 public class TUI {
 	static boolean gameOver = false;
-//	public static Scanner scan = new Scanner(System.in);
 	public static int playerTurn;
 	public static int playAsWhite;
 
@@ -21,17 +20,6 @@ public class TUI {
 		//Who starts/the game
 		System.out.println("Do you want to start? \n1. Yes\n2. No");
 		whoStart();
-		
-//		//The game
-//		while(!gameOver){
-//			if(endGame()){
-//				gameOver = true;
-//				break;
-//			}else{
-//			userTurn();
-//			enemyTurn();
-//			}
-//		}
 	}
 	
 	//Convert fx 6444 to e2e4 (also with capping)
@@ -51,10 +39,11 @@ public class TUI {
 	}
 
 	public static void userTurn(){
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		playerTurn = 1;
 		check();
-//		System.out.println("\nPossible moves: " + Moves.possibleMoves());
+		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
 		boolean valid = validMove(move);
@@ -114,6 +103,7 @@ public class TUI {
 			break;	
 			}
 		}
+		newMove += move.toUpperCase().charAt(4);
 		return newMove;		
 	}
 	
@@ -151,6 +141,7 @@ public class TUI {
 	}
 	
 	public static void playerAsWhite(){
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		playAsWhite = scan.nextInt();
 		if(playAsWhite == 1 || playAsWhite == 2){
@@ -164,6 +155,7 @@ public class TUI {
 	}
 	
 	public static void whoStart(){
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int whoStarts = scan.nextInt();
 		if(whoStarts == 1 || whoStarts == 2){
@@ -183,11 +175,11 @@ public class TUI {
 				//enemy start/the game
 				ChessBoard.drawBoard();
 				while(!gameOver){
+					enemyTurn();
 					if(endGame()){
 						gameOver = true;
 						break;
 					}else{
-					enemyTurn();
 					userTurn();
 					}
 				}
@@ -196,5 +188,18 @@ public class TUI {
 			System.out.println("Not legal choice. Try again!");
 			whoStart();
 		}
+	}
+	
+	//Makes the possibleMoves list better looking with spaces
+	public static String possibleMoves(String moves){
+		String newMoves = "";
+		for (int i = 0; i < moves.length(); i+=5) {
+			if(moves.charAt(i+4) != ' '){
+				newMoves += "["+moves.substring(i, i+5)+"] ";
+			}else{
+				newMoves += "["+moves.substring(i, i+5)+"] ";
+			}
+		}
+		return newMoves;
 	}
 }

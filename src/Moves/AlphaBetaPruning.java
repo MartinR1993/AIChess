@@ -4,7 +4,7 @@ import Board.ChessBoard;
 import Rating.Rating;
 
 public class AlphaBetaPruning {
-	public static int globalDepth = 4;
+	public static int globalDepth = 5;
 
 	public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
 		String list = Moves.possibleMoves();
