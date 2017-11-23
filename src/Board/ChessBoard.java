@@ -74,12 +74,7 @@ public class ChessBoard {
                 
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
-                        if(board[i][j] == " " ){
-                            str = str + "0";
-                        }else{
-                            str = str + board[i][j];
-                        }
-                        
+                            str = str + board[i][j]; 
                     }
                 }
                   str =  str.replaceAll(" ", "0");
