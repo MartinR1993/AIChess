@@ -14,12 +14,19 @@ public class TUI {
 	public static void playgame(){
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
-		//player as white
-		System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
-		playerAsWhite();
-		//Who starts/the game
+                
+                //continue game
+		System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
+		boolean boo = continueGame();
+                if(!boo){
+                    //player as white
+                    System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
+                    playerAsWhite();
+                }		
+                //Who starts/the game
 		System.out.println("Do you want to start? \n1. Yes\n2. No");
 		whoStart();
+               
 	}
 	
 	//Convert fx 6444 to e2e4 (also with capping)
@@ -152,6 +159,42 @@ public class TUI {
 			System.out.println("Not legal choice. Try again!");
 			playerAsWhite();
 		}
+	}
+        
+        	public static boolean continueGame(){
+//		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		int continueChoice = scan.nextInt();
+		if(continueChoice == 1 || continueChoice == 2){
+                        if(continueChoice == 1){
+                            String boardString = scan.next();
+                            System.out.println(boardString);
+                            
+                            String newBoard[][] = new String[8][8];
+                            
+                            
+                            for (int i = 0; i < 8; i++) {
+                                for (int j = 0; j < 8; j++) {
+ 
+                                    if (boardString.charAt(i+(j*8)) == '0') {
+                                        newBoard[j][i]=" ";
+                                    }else{
+                                    newBoard[j][i]=boardString.charAt(i+(j*8))+"";   
+                                    }
+                                    
+                                }
+                            }
+                            ChessBoard.setBoard(newBoard);
+                            ChessBoard.drawBoard();
+                            
+                            return true;
+			}
+                        
+		}else{
+			System.out.println("Not legal choice. Try again!");
+			continueGame();
+		}
+                return false;
 	}
 	
 	public static void whoStart(){

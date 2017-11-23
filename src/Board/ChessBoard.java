@@ -47,6 +47,10 @@ public class ChessBoard {
 //			{"p","p"," "," "," "," "," "," "},//5
 //			{"P","P","P","P","P"," ","p","P"},//6
 //			{"R","K","B","Q","A","B","K","R"}};//7	
+
+    public static void setBoard(String[][] board) {
+        ChessBoard.board = board;
+    }
 	
 	//Case king
 	public static int kingPositionC;
@@ -57,11 +61,29 @@ public class ChessBoard {
 //		int temp = 8;
 //		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
 		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
-		for (int i = 0; i < 8; i++) {
+                String str ="";
+                for (int i = 0; i < 8; i++) {
 			//java.util.Arrays sets up the print nice
 			System.out.println(i + Arrays.toString(board[i]));
+                        
+                        
 //			System.out.println(temp + Arrays.toString(board[i]));
 //			temp--;
 		}
+                
+                
+                for (int i = 0; i < 8; i++) {
+                    for (int j = 0; j < 8; j++) {
+                        if(board[i][j] == " " ){
+                            str = str + "0";
+                        }else{
+                            str = str + board[i][j];
+                        }
+                        
+                    }
+                }
+                  str =  str.replaceAll(" ", "0");
+                System.out.println(str);
+                
 	}
 }
