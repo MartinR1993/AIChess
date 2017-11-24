@@ -102,8 +102,8 @@ public class TUI {
 	//Check with the possibleMove list
 	public static boolean validMove(String move){
 		String possibleMoves = Moves.possibleMoves();
-		for (int i = 0; i < possibleMoves.length(); i+=5) {
-			if(move.equals(possibleMoves.substring(i, i+5))){
+		for (int i = 0; i < possibleMoves.length(); i+=6) {
+			if(move.equals(possibleMoves.substring(i, i+6))){
 				return true;
 			}
 		}
@@ -301,11 +301,11 @@ public class TUI {
 	//Makes the possibleMoves list better looking with spaces
 	public static String possibleMoves(String moves){
 		String newMoves = "";
-		for (int i = 0; i < moves.length(); i+=5) {
+		for (int i = 0; i < moves.length(); i+=6) {
 			if(moves.charAt(i+4) != ' '){
-				newMoves += "["+moves.substring(i, i+5)+"] ";
+				newMoves += "["+moves.substring(i, i+6)+"] ";
 			}else{
-				newMoves += "["+moves.substring(i, i+5)+"] ";
+				newMoves += "["+moves.substring(i, i+6)+"] ";
 			}
 		}
 		return newMoves;

@@ -17,25 +17,25 @@ public class AlphaBetaPruning {
 		//either 1 or 0
 		player=1-player;
 
-		for (int i = 0; i < list.length(); i+=5) {
-			Moves.makeMove(list.substring(i,i+5));
+		for (int i = 0; i < list.length(); i+=6) {
+			Moves.makeMove(list.substring(i,i+6));
 			flipBoard();
-			String returnString = alphaBeta(depth-1, beta, alpha, list.substring(i,i+5), player);
-			int value = Integer.valueOf(returnString.substring(5));
+			String returnString = alphaBeta(depth-1, beta, alpha, list.substring(i,i+6), player);
+			int value = Integer.valueOf(returnString.substring(6));
 			flipBoard();
-			Moves.undoMove(list.substring(i,i+5));
+			Moves.undoMove(list.substring(i,i+6));
 			if(player == 0) {
 				if(value <= beta){
 					beta = value;
 					if(depth == globalDepth){
-						move = returnString.substring(0, 5);
+						move = returnString.substring(0, 6);
 					}
 				}
 			}else{
 				if(value > alpha){
 					alpha = value;
 					if(depth == globalDepth){
-						move = returnString.substring(0, 5);
+						move = returnString.substring(0, 6);
 					}
 				}
 			}

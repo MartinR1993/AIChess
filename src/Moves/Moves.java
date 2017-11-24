@@ -3,41 +3,11 @@ import Board.ChessBoard;
 import Rating.Rating;
 
 public class Moves {
-//	public static void makeMove(String move) {
-//		//pawn promotion
-//		//fx 1201k
-//		if(ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] == "P" && Character.getNumericValue(move.charAt(2)) == 0){
-//			ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = "Q";
-//			ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
-//		}else{
-//			//regular moves
-//			ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
-//			ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
-//			if("A".equals(ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))])) {
-//				ChessBoard.kingPositionC = 8*Character.getNumericValue(move.charAt(2))+Character.getNumericValue(move.charAt(3));
-//			}
-//		}
-//	}
-//	
-//	public static void undoMove(String move) {
-//		//pawn promotion
-//		//fx 1201k
-//			if(ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] == "Q" && Character.getNumericValue(move.charAt(0)) == 1){
-//			ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
-//			ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = "P";
-//		}else{
-//			//Regular move
-//			ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
-//			ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
-//			if("A".equals(ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))])) {
-//				ChessBoard.kingPositionC = 8*Character.getNumericValue(move.charAt(0))+Character.getNumericValue(move.charAt(1));
-//			}
-//		}
-//	}
+
 	    public static void makeMove(String move) {
 			//regular moves
-			if(move.charAt(4) != 'P'){
-				//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4)
+			if(move.charAt(5) != 'P'){
+				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4), Space(5)
 				ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))];
 				ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
 				if("A".equals(ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))])) {
@@ -46,16 +16,16 @@ public class Moves {
 			}
 			//pawn promotion
 			else{
-				//char : column1, column2, captured piece, new-piece, P
-				ChessBoard.board[1][Character.getNumericValue(move.charAt(0))] = " ";
-				ChessBoard.board[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(3)); 
+				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4), "P"(5)
+				ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = "Q";
+				ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = " ";
 			}
 		}
 		
 		public static void undoMove(String move) {
 			//regular moves
-			if(move.charAt(4) != 'P'){
-				//char : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3),Captured-piece(4)
+			if(move.charAt(5) != 'P'){
+				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3),Captured-piece(4), Space(5)
 				ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))];
 				ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
 				if("A".equals(ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))])) {
@@ -64,9 +34,9 @@ public class Moves {
 			}
 			//pawn promotion
 			else{
-				//char : column1, column2, captured piece, new-piece, P
-				ChessBoard.board[1][Character.getNumericValue(move.charAt(0))] = "P";
-				ChessBoard.board[0][Character.getNumericValue(move.charAt(1))] = String.valueOf(move.charAt(2)); 
+				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4), "P"(5)
+				ChessBoard.board[Character.getNumericValue(move.charAt(0))][Character.getNumericValue(move.charAt(1))] = "P";
+				ChessBoard.board[Character.getNumericValue(move.charAt(2))][Character.getNumericValue(move.charAt(3))] = String.valueOf(move.charAt(4));
 			}
 		}
 	
@@ -106,7 +76,7 @@ public class Moves {
 						int kingTemp = ChessBoard.kingPositionC;
 						ChessBoard.kingPositionC = i+(j/3)*8+j%3-9;
 						if(kingSafe()) {
-							list = list+row+col+(row-1+j/3)+(col-1+j%3)+oldPiece;
+							list = list+row+col+(row-1+j/3)+(col-1+j%3)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "A";
 						ChessBoard.board[row-1+j/3][col-1+j%3] = oldPiece;
@@ -136,7 +106,7 @@ public class Moves {
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "Q";
 							if(kingSafe()) {
-								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "Q";
 							ChessBoard.board[row+temp*j][col+temp*k] = oldPiece;
@@ -147,7 +117,7 @@ public class Moves {
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "Q";
 							if(kingSafe()) {
-								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "Q";
 							ChessBoard.board[row+temp*j][col+temp*k] = oldPiece;
@@ -178,7 +148,7 @@ public class Moves {
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "B";
 							if(kingSafe()) {
-								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "B";
 							ChessBoard.board[row+temp*j][col+temp*k] = oldPiece;
@@ -189,7 +159,7 @@ public class Moves {
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "B";
 							if(kingSafe()) {
-								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece;
+								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "B";
 							ChessBoard.board[row+temp*j][col+temp*k] = oldPiece;
@@ -215,7 +185,7 @@ public class Moves {
 						ChessBoard.board[row][col] = " ";
 						ChessBoard.board[row+j][col+k*2] = "K";
 						if(kingSafe()) {
-							list = list+row+col+(row+j)+(col+k*2)+oldPiece;
+							list = list+row+col+(row+j)+(col+k*2)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "K";
 						ChessBoard.board[row+j][col+k*2] = oldPiece;
@@ -228,7 +198,7 @@ public class Moves {
 						ChessBoard.board[row][col] = " ";
 						ChessBoard.board[row+j*2][col+k] = "K";
 						if(kingSafe()) {
-							list = list+row+col+(row+j*2)+(col+k)+oldPiece;
+							list = list+row+col+(row+j*2)+(col+k)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "K";
 						ChessBoard.board[row+j*2][col+k] = oldPiece;
@@ -253,7 +223,7 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row][col+temp*j] = "R";
 					if(kingSafe()) {
-						list = list+row+col+(row)+(col+temp*j)+oldPiece;
+						list = list+row+col+(row)+(col+temp*j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
 					ChessBoard.board[row][col+temp*j] = oldPiece;
@@ -264,7 +234,7 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row][col+temp*j] = "R";
 					if(kingSafe()) {
-						list = list+row+col+(row)+(col+temp*j)+oldPiece;
+						list = list+row+col+(row)+(col+temp*j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
 					ChessBoard.board[row][col+temp*j] = oldPiece;
@@ -278,7 +248,7 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row+temp*j][col] = "R";
 					if(kingSafe()) {
-						list = list+row+col+(row+temp*j)+(col)+oldPiece;
+						list = list+row+col+(row+temp*j)+(col)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
 					ChessBoard.board[row+temp*j][col] = oldPiece;
@@ -289,7 +259,7 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row+temp*j][col] = "R";
 					if(kingSafe()) {
-						list = list+row+col+(row+temp*j)+(col)+oldPiece;
+						list = list+row+col+(row+temp*j)+(col)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
 					ChessBoard.board[row+temp*j][col] = oldPiece;
@@ -313,7 +283,7 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row-1][col+j] = "P";
 					if(kingSafe()) {
-						list = list+row+col+(row-1)+(col+j)+oldPiece;
+						list = list+row+col+(row-1)+(col+j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "P";
 					ChessBoard.board[row-1][col+j] = oldPiece;
@@ -326,27 +296,11 @@ public class Moves {
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row-1][col+j] = "Q";
 					if(kingSafe()) {
-//						list = list+row+col+(row-1)+(col+j)+oldPiece;
-						list = list+col+(col+j)+oldPiece+"Q"+"P";
+						list = list+row+col+(row-1)+(col+j)+oldPiece+"P";
 					}
 					ChessBoard.board[row][col] = "P";
 					ChessBoard.board[row-1][col+j] = oldPiece;
 				}
-//				//Choose between Q,R,B,K
-//				if (Character.isLowerCase(ChessBoard.board[row-1][col+1].charAt(0)) && i < 16){
-//					String[] temp = {"Q","R","B","K"};
-//					for (int k = 0; k < 4 ; k++) {
-//						oldPiece = ChessBoard.board[row-1][col+j];
-//						ChessBoard.board[row][col] = " ";
-//						ChessBoard.board[row-1][col+j] = temp[k];
-//						if(kingSafe()) {
-//							//column1, column2, captured-piece, new-piece
-//							list = list+col+(col+j)+oldPiece+temp[k]+"P";
-//						}
-//						ChessBoard.board[row][col] = "P";
-//						ChessBoard.board[row-1][col+j] = oldPiece;
-//					}
-//				}
 			}catch(Exception e) {}
 		}
 		try{ 
@@ -356,7 +310,7 @@ public class Moves {
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-1][col] = "P";
 				if(kingSafe()) {
-					list = list+row+col+(row-1)+(col)+oldPiece;
+					list = list+row+col+(row-1)+(col)+oldPiece+" ";
 				}
 				ChessBoard.board[row][col] = "P";
 				ChessBoard.board[row-1][col] = oldPiece;
@@ -369,27 +323,11 @@ public class Moves {
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-1][col] = "Q";
 				if(kingSafe()) {
-//					list = list+row+col+(row-1)+(col)+oldPiece;
-					list = list+col+(col)+oldPiece+"Q"+"P";
+					list = list+row+col+(row-1)+(col)+oldPiece+"P";
 				}
 				ChessBoard.board[row][col] = "P";
 				ChessBoard.board[row-1][col] = oldPiece;
 			}
-//			//Choose between Q,R,B,K
-//			if (" ".equals(ChessBoard.board[row-1][col]) && i < 16){
-//				String[] temp = {"Q","R","B","K"};
-//				for (int k = 0; k < 4 ; k++) {
-//					oldPiece = ChessBoard.board[row-1][col];
-//					ChessBoard.board[row][col] = " ";
-//					ChessBoard.board[row-1][col] = temp[k];
-//					if(kingSafe()) {
-//						//column1, column2, captured-piece, new-piece
-//						list = list+col+(col)+oldPiece+temp[k]+"P";
-//					}
-//					ChessBoard.board[row][col] = "P";
-//					ChessBoard.board[row-1][col] = oldPiece;
-//				}
-//			}
 		}catch(Exception e) {}
 		try{ 
 			//Move two forward
@@ -398,7 +336,7 @@ public class Moves {
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-2][col] = "P";
 				if(kingSafe()) {
-					list = list+row+col+(row-2)+(col)+oldPiece;
+					list = list+row+col+(row-2)+(col)+oldPiece+" ";
 				}
 				ChessBoard.board[row][col] = "P";
 				ChessBoard.board[row-2][col] = oldPiece;
@@ -408,21 +346,21 @@ public class Moves {
 	}
 	
 	public static String sortMoves(String list) {
-        int[] score = new int [list.length()/5];
-        for (int i = 0; i < list.length(); i += 5) {
-            makeMove(list.substring(i, i+5));
-            score[i/5] =- Rating.rating(-1, 0);
-            undoMove(list.substring(i, i+5));
+        int[] score = new int [list.length()/6];
+        for (int i = 0; i < list.length(); i += 6) {
+            makeMove(list.substring(i, i+6));
+            score[i/6] =- Rating.rating(-1, 0);
+            undoMove(list.substring(i, i+6));
         }
         String newListA = "", newListB = list;
-        for (int i = 0; i < Math.min(6, list.length()/5); i++) {//first few moves only
+        for (int i = 0; i < Math.min(6, list.length()/6); i++) {//first few moves only
             int max =- 1000000, maxLocation = 0;
-            for (int j = 0; j < list.length()/5; j++) {
+            for (int j = 0; j < list.length()/6; j++) {
                 if (score[j] > max) {max = score[j]; maxLocation = j;}
             }
             score[maxLocation] =- 1000000;
-            newListA += list.substring(maxLocation*5,maxLocation*5+5);
-            newListB = newListB.replace(list.substring(maxLocation*5,maxLocation*5+5), "");
+            newListA += list.substring(maxLocation*6,maxLocation*6+6);
+            newListB = newListB.replace(list.substring(maxLocation*6,maxLocation*6+6), "");
         }
         return newListA+newListB;
     }
