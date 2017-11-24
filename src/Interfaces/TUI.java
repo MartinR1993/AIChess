@@ -30,10 +30,75 @@ public class TUI {
 	}
 	
 	//Convert fx 6444 to e2e4 (also with capping)
-	public static String convertMove(){
-		//TODO maybe?
-		return "";
+	public String moveConverter(String move) {
+
+		move=move.toUpperCase();
+		StringBuffer sb = new StringBuffer();
+		String[] parts = move.split("");
+		String tmp=parts[0];
+		parts[0]=parts[1];
+		parts[1]=tmp;
+		tmp=parts[2];
+		parts[2]=parts[3];
+		parts[3]=tmp;
+
+		sb.append(number2NumberConverter(parts[0]));
+		sb.append(letter2NumberConverter(parts[1]));
+		sb.append(number2NumberConverter(parts[2]));
+		sb.append(letter2NumberConverter(parts[3]));
+
+
+		return sb.toString();
+
 	}
+
+	public int letter2NumberConverter(String letter) {
+		switch (letter) {
+			case "A":
+				return 0;
+			case "B":
+				return 1;
+			case "C":
+				return 2;
+			case "D":
+				return 3;
+			case "E":
+				return 4;
+			case "F":
+				return 5;
+			case "G":
+				return 6;
+			case "H":
+				return 7;
+			default:
+				return -1;
+
+		}
+	}
+	public int number2NumberConverter(String nr) {
+		switch (nr) {
+			case "8":
+				return 0;
+			case "7":
+				return 1;
+			case "6":
+				return 2;
+			case "5":
+				return 3;
+			case "4":
+				return 4;
+			case "3":
+				return 5;
+			case "2":
+				return 6;
+			case "1":
+				return 7;
+			default:
+				return -1;
+
+		}
+	}
+
 	//Check with the possibleMove list
 	public static boolean validMove(String move){
 		String possibleMoves = Moves.possibleMoves();
@@ -245,4 +310,7 @@ public class TUI {
 		}
 		return newMoves;
 	}
+
+
+
 }
