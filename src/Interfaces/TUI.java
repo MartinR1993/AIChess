@@ -6,12 +6,17 @@ import Board.ChessBoard;
 import Moves.AlphaBetaPruning;
 import Moves.Moves;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Utilities;
+
 public class TUI {
 	static boolean gameOver = false;
 	public static int playerTurn;
 	public static int playAsWhite;
+    public static Winboard frame;
 
-	public static void playgame(){
+    public static void playgame(){
+
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
                 
@@ -22,15 +27,74 @@ public class TUI {
                     //player as white
                     System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
                     playerAsWhite();
-                }		
+                }
                 //Who starts/the game
 		System.out.println("Do you want to start? \n1. Yes\n2. No");
 		whoStart();
                
 	}
-	
-	//Convert fx 6444 to e2e4 (also with capping)
-	public String moveConverter(String move) {
+	//Convert fx 6444 to e2e4
+	public static String ourMoveToWinboardConverter(String move)
+	{
+		StringBuffer sb = new StringBuffer();
+		String[] parts = move.split("");
+		sb.append(outgoingNumbertoLetterConverter(parts[0]));
+        sb.append(outgoingNumbertoNumberConverter(parts[1]));
+        sb.append(outgoingNumbertoLetterConverter(parts[2]));
+        sb.append(outgoingNumbertoNumberConverter(parts[3]));
+
+
+		return sb.toString();
+	}
+    public static char outgoingNumbertoLetterConverter(String number) {
+        switch (number) {
+            case "0":
+                return 'A';
+            case "1":
+                return 'B';
+            case "2":
+                return 'B';
+            case "3":
+                return 'C';
+            case "4":
+                return 'D';
+            case "5":
+                return 'F';
+            case "6":
+                return 'G';
+            case "7":
+                return 'H';
+            default:
+                return ' ';
+
+        }
+    }
+    public static int outgoingNumbertoNumberConverter(String nr) {
+        switch (nr) {
+            case "0":
+                return 8;
+            case "1":
+                return 7;
+            case "2":
+                return 6;
+            case "3":
+                return 5;
+            case "4":
+                return 4;
+            case "5":
+                return 3;
+            case "6":
+                return 2;
+            case "7":
+                return 1;
+            default:
+                return -1;
+
+        }
+    }
+
+	//Convert fx e2e4 to 6444
+	public static String winboardToOurMoveConverter(String move) {
 
 		move=move.toUpperCase();
 		StringBuffer sb = new StringBuffer();
@@ -42,17 +106,17 @@ public class TUI {
 		parts[2]=parts[3];
 		parts[3]=tmp;
 
-		sb.append(number2NumberConverter(parts[0]));
-		sb.append(letter2NumberConverter(parts[1]));
-		sb.append(number2NumberConverter(parts[2]));
-		sb.append(letter2NumberConverter(parts[3]));
+		sb.append(incomingNumbertoNumberConverter(parts[0]));
+		sb.append(incomingLettertoNumberConverter(parts[1]));
+		sb.append(incomingNumbertoNumberConverter(parts[2]));
+		sb.append(incomingLettertoNumberConverter(parts[3]));
 
 
 		return sb.toString();
 
 	}
 
-	public int letter2NumberConverter(String letter) {
+	public static int incomingLettertoNumberConverter(String letter) {
 		switch (letter) {
 			case "A":
 				return 0;
@@ -75,7 +139,7 @@ public class TUI {
 
 		}
 	}
-	public int number2NumberConverter(String nr) {
+	public static int incomingNumbertoNumberConverter(String nr) {
 		switch (nr) {
 			case "8":
 				return 0;
@@ -99,6 +163,27 @@ public class TUI {
 		}
 	}
 
+	public static String getLastLine(){
+        int end = frame.textFromWinboard.getDocument().getLength();
+        int start = 0;
+        try {
+            start = Utilities.getRowStart(frame.textFromWinboard, end);
+
+
+            while (start == end) {
+                end--;
+                start = Utilities.getRowStart(frame.textFromWinboard, end);
+            }
+
+            String text = frame.textFromWinboard.getText(start, end - start);
+           return text;
+        }
+        catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 	//Check with the possibleMove list
 	public static boolean validMove(String move){
 		String possibleMoves = Moves.possibleMoves();
@@ -118,17 +203,20 @@ public class TUI {
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
+		//String move = winboardToOurMoveConverter(getLastLine());
+
 		boolean valid = validMove(move);
 		if(valid){
 			Moves.makeMove(move);
 			ChessBoard.drawBoard();
 		}
 		else{
-			System.out.println("Unvalid move. try again!");
+			System.out.println("Invalid move. try again!");
 			userTurn();
 		}
 		playerTurn = 0;
 	}
+
 	public static void enemyTurn(){
 		playerTurn = 0;
 		int beta = Integer.MAX_VALUE;
@@ -143,6 +231,8 @@ public class TUI {
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
 			String moveEnemyConverted = enemyMove(moveEnemy);
+			frame.textToWinboard.setText("move "+ourMoveToWinboardConverter(moveEnemyConverted));
+			frame.buttonSend.doClick();
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
@@ -266,9 +356,11 @@ public class TUI {
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int whoStarts = scan.nextInt();
+       // int whoStarts = 1;
 		if(whoStarts == 1 || whoStarts == 2){
 			if(whoStarts == 1){
 				//user start/the game
+           //     frame = new Winboard();
 				ChessBoard.drawBoard();
 				while(!gameOver){
 					if(endGame()){
@@ -310,6 +402,7 @@ public class TUI {
 		}
 		return newMoves;
 	}
+
 
 
 

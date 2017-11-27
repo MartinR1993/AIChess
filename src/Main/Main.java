@@ -2,9 +2,11 @@ package Main;
 
 import Board.ChessBoard;
 import Interfaces.TUI;
+import Interfaces.Winboard;
 
 public class Main {
 	public static void main(String[] args) {
+
 		//Bigger case king position
 		while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
 			ChessBoard.kingPositionC++;
