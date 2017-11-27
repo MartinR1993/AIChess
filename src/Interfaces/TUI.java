@@ -1,5 +1,8 @@
 package Interfaces;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 import Board.ChessBoard;
@@ -15,13 +18,16 @@ public class TUI {
 	public static int playAsWhite;
     public static Winboard frame;
 
+
     public static void playgame(){
 
+Thread thread = new Thread(frame=new Winboard());
+thread.start();
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
                 
                 //continue game
-		System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
+		/*System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
 		boolean boo = continueGame();
                 if(!boo){
                     //player as white
@@ -29,7 +35,7 @@ public class TUI {
                     playerAsWhite();
                 }
                 //Who starts/the game
-		System.out.println("Do you want to start? \n1. Yes\n2. No");
+		System.out.println("Do you want to start? \n1. Yes\n2. No");*/
 		whoStart();
                
 	}
@@ -38,6 +44,12 @@ public class TUI {
 	{
 		StringBuffer sb = new StringBuffer();
 		String[] parts = move.split("");
+        String tmp = parts[0];
+        parts[0] = parts[1];
+        parts[1] = tmp;
+        tmp = parts[2];
+        parts[2] = parts[3];
+        parts[3] = tmp;
 		sb.append(outgoingNumbertoLetterConverter(parts[0]));
         sb.append(outgoingNumbertoNumberConverter(parts[1]));
         sb.append(outgoingNumbertoLetterConverter(parts[2]));
@@ -49,21 +61,21 @@ public class TUI {
     public static char outgoingNumbertoLetterConverter(String number) {
         switch (number) {
             case "0":
-                return 'A';
+                return 'a';
             case "1":
-                return 'B';
+                return 'b';
             case "2":
-                return 'B';
+                return 'c';
             case "3":
-                return 'C';
+                return 'd';
             case "4":
-                return 'D';
+                return 'e';
             case "5":
-                return 'F';
+                return 'f';
             case "6":
-                return 'G';
+                return 'g';
             case "7":
-                return 'H';
+                return 'h';
             default:
                 return ' ';
 
@@ -99,20 +111,27 @@ public class TUI {
 		move=move.toUpperCase();
 		StringBuffer sb = new StringBuffer();
 		String[] parts = move.split("");
-		String tmp=parts[0];
-		parts[0]=parts[1];
-		parts[1]=tmp;
-		tmp=parts[2];
-		parts[2]=parts[3];
-		parts[3]=tmp;
+		try {
+            String tmp = parts[0];
+            parts[0] = parts[1];
+            parts[1] = tmp;
+            tmp = parts[2];
+            parts[2] = parts[3];
+            parts[3] = tmp;
 
-		sb.append(incomingNumbertoNumberConverter(parts[0]));
-		sb.append(incomingLettertoNumberConverter(parts[1]));
-		sb.append(incomingNumbertoNumberConverter(parts[2]));
-		sb.append(incomingLettertoNumberConverter(parts[3]));
+            sb.append(incomingNumbertoNumberConverter(parts[0]));
+            sb.append(incomingLettertoNumberConverter(parts[1]));
+            sb.append(incomingNumbertoNumberConverter(parts[2]));
+            sb.append(incomingLettertoNumberConverter(parts[3]));
+        }
 
-
-		return sb.toString();
+        catch(ArrayIndexOutOfBoundsException e){
+		    return "";
+        }
+        while(sb.length()<6){
+            sb.append(" ");
+        }
+        return sb.toString();
 
 	}
 
@@ -167,16 +186,10 @@ public class TUI {
         int end = frame.textFromWinboard.getDocument().getLength();
         int start = 0;
         try {
-            start = Utilities.getRowStart(frame.textFromWinboard, end);
-
-
-            while (start == end) {
-                end--;
-                start = Utilities.getRowStart(frame.textFromWinboard, end);
+            if(end>=4){
+                String text = frame.textFromWinboard.getText(end - 4,4);
+                return text;
             }
-
-            String text = frame.textFromWinboard.getText(start, end - start);
-           return text;
         }
         catch (BadLocationException e) {
             e.printStackTrace();
@@ -202,16 +215,21 @@ public class TUI {
 		check();
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
-		String move = scan.nextLine();
-		//String move = winboardToOurMoveConverter(getLastLine());
+	//	String move = scan.nextLine();
 
-		boolean valid = validMove(move);
+		String move = winboardToOurMoveConverter(getLastLine());
+
+        while(move.equals(winboardToOurMoveConverter(getLastLine())));
+        System.out.println(getLastLine());
+        System.out.println(winboardToOurMoveConverter(getLastLine()));
+        boolean valid = validMove(move);
 		if(valid){
 			Moves.makeMove(move);
+            System.out.println("Making move: "+move);
 			ChessBoard.drawBoard();
 		}
 		else{
-			System.out.println("Invalid move. try again!");
+			System.out.println("Invalid move "+getLastLine()+" "+move+". try again!");
 			userTurn();
 		}
 		playerTurn = 0;
@@ -230,10 +248,14 @@ public class TUI {
 			String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
+
 			String moveEnemyConverted = enemyMove(moveEnemy);
-			frame.textToWinboard.setText("move "+ourMoveToWinboardConverter(moveEnemyConverted));
-			frame.buttonSend.doClick();
-			System.out.println("Enemys move: " + moveEnemyConverted);
+            System.out.println("Enemys move: " + moveEnemyConverted);
+			frame.textToWinboard.setText("move "+ourMoveToWinboardConverter(moveEnemyConverted));;
+            frame.buttonSend.doClick();
+            frame.textToWinboard.setText("move "+ourMoveToWinboardConverter(moveEnemyConverted));;
+            frame.buttonSend.doClick();
+
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
 			playerTurn = 1;
@@ -355,8 +377,8 @@ public class TUI {
 	public static void whoStart(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-		int whoStarts = scan.nextInt();
-       // int whoStarts = 1;
+	//	int whoStarts = scan.nextInt();
+        int whoStarts = 1;
 		if(whoStarts == 1 || whoStarts == 2){
 			if(whoStarts == 1){
 				//user start/the game

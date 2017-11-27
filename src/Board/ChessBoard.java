@@ -50,7 +50,7 @@ public class ChessBoard {
 	
 	public static void drawBoard(){
 //		int temp = 8;
-//		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+	//	System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
 		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
                 String str ="";
                 for (int i = 0; i < 8; i++) {
