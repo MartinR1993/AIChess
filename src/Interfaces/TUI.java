@@ -1,8 +1,11 @@
 package Interfaces;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import Board.ChessBoard;
@@ -184,28 +187,37 @@ thread.start();
 
 	public static String getLastLine(){
         int end = frame.textFromWinboard.getDocument().getLength();
-        int start = 0;
+		String text ="";
         try {
-            if(end>=4){
-                String text = frame.textFromWinboard.getText(end - 4,4);
+
+            if(end>=5){
+                text= frame.textFromWinboard.getText(end - 5,4);
+
+			//	frame.textFromWinboard.setText("");
                 return text;
             }
         }
         catch (BadLocationException e) {
             e.printStackTrace();
         }
-        return "";
+        return text;
     }
 
 	//Check with the possibleMove list
-	public static boolean validMove(String move){
+	public static String validMove(String move){
+		if(move.length()>=4){
 		String possibleMoves = Moves.possibleMoves();
+		ArrayList<String> list = new ArrayList<String>();
 		for (int i = 0; i < possibleMoves.length(); i+=6) {
-			if(move.equals(possibleMoves.substring(i, i+6))){
-				return true;
-			}
+			list.add(possibleMoves.substring(i,i+6));
 		}
-		return false;
+		for (int i=0;i<list.size();i++){
+			if(move.substring(0,3).equals(list.get(i).substring(0,3))){
+				return list.get(i);
+			}
+		}}
+
+		return "";
 	}
 
 	public static void userTurn(){
@@ -219,17 +231,23 @@ thread.start();
 
 		String move = winboardToOurMoveConverter(getLastLine());
 
-        while(move.equals(winboardToOurMoveConverter(getLastLine())));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		//move=winboardToOurMoveConverter(getLastLine());
         System.out.println(getLastLine());
         System.out.println(winboardToOurMoveConverter(getLastLine()));
-        boolean valid = validMove(move);
-		if(valid){
+        String valid = validMove(move);
+		if(!(valid.equals(""))){
 			Moves.makeMove(move);
             System.out.println("Making move: "+move);
 			ChessBoard.drawBoard();
 		}
 		else{
-			System.out.println("Invalid move "+getLastLine()+" "+move+". try again!");
+			System.out.println("Invalid move '"+getLastLine()+"'**'"+move+"'. try again!");
 			userTurn();
 		}
 		playerTurn = 0;
@@ -296,19 +314,23 @@ thread.start();
 		if(Moves.possibleMoves().length() == 0){
 			if(!Moves.kingSafe()){
 				if(playerTurn == 1){
+					frame.textFromWinboard.append("Enemy won by checkmate!");
 					System.out.println("\nEnemy won by Checkmate!");
 					return true;
 				}else{
 					System.out.println("\nYou won by Checkmate!");
+					frame.textFromWinboard.append("you won by checkmate!");
 					return true;
 				}
 			}
 			else{
 				if(playerTurn == 1){
 					System.out.println("\nEnemy put you in Stalemate! Tie!");
+					frame.textFromWinboard.append("Enemy put you in a Stalemate! Tie!");
 					return true;
 				}else{
 					System.out.println("\nYou put enemy in Stalemate! Tie!");
+					frame.textFromWinboard.append("Enemy put you in a stalemate! Tie!");
 					return true;
 				}
 			}
