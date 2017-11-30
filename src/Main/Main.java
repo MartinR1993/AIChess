@@ -1,6 +1,7 @@
 package Main;
 
 import Board.ChessBoard;
+import Interfaces.GUI;
 import Interfaces.TUI;
 import Interfaces.Winboard;
 
