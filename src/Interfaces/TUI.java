@@ -32,72 +32,147 @@ public class TUI {
 		}
 	}
 	
-	//Convert fx 6444 to e2e4 (also with capping)
-	public String moveConverter(String move) {
+	//Convert fx 6444 to e2e4
+		public static String ourMoveToWinboardConverter(String move)
+		{
+			StringBuffer sb = new StringBuffer();
+			String[] parts = move.split("");
+	        String tmp = parts[0];
+	        parts[0] = parts[1];
+	        parts[1] = tmp;
+	        tmp = parts[2];
+	        parts[2] = parts[3];
+	        parts[3] = tmp;
+			sb.append(outgoingNumbertoLetterConverter(parts[0]));
+	        sb.append(outgoingNumbertoNumberConverter(parts[1]));
+	        sb.append(outgoingNumbertoLetterConverter(parts[2]));
+	        sb.append(outgoingNumbertoNumberConverter(parts[3]));
 
-		move=move.toUpperCase();
-		StringBuffer sb = new StringBuffer();
-		String[] parts = move.split("");
-		String tmp=parts[0];
-		parts[0]=parts[1];
-		parts[1]=tmp;
-		tmp=parts[2];
-		parts[2]=parts[3];
-		parts[3]=tmp;
 
-		sb.append(number2NumberConverter(parts[0]));
-		sb.append(letter2NumberConverter(parts[1]));
-		sb.append(number2NumberConverter(parts[2]));
-		sb.append(letter2NumberConverter(parts[3]));
-
-		return sb.toString();
-	}
-
-	public int letter2NumberConverter(String letter) {
-		switch (letter) {
-			case "A":
-				return 0;
-			case "B":
-				return 1;
-			case "C":
-				return 2;
-			case "D":
-				return 3;
-			case "E":
-				return 4;
-			case "F":
-				return 5;
-			case "G":
-				return 6;
-			case "H":
-				return 7;
-			default:
-				return -1;
+			return sb.toString();
 		}
-	}
-	
-	public int number2NumberConverter(String nr) {
-		switch (nr) {
-			case "8":
-				return 0;
-			case "7":
-				return 1;
-			case "6":
-				return 2;
-			case "5":
-				return 3;
-			case "4":
-				return 4;
-			case "3":
-				return 5;
-			case "2":
-				return 6;
-			case "1":
-				return 7;
-			default:
-				return -1;
+	    public static char outgoingNumbertoLetterConverter(String number) {
+	        switch (number) {
+	            case "0":
+	                return 'a';
+	            case "1":
+	                return 'b';
+	            case "2":
+	                return 'c';
+	            case "3":
+	                return 'd';
+	            case "4":
+	                return 'e';
+	            case "5":
+	                return 'f';
+	            case "6":
+	                return 'g';
+	            case "7":
+	                return 'h';
+	            default:
+	                return ' ';
+
+	        }
+	    }
+	    public static int outgoingNumbertoNumberConverter(String nr) {
+	        switch (nr) {
+	            case "0":
+	                return 8;
+	            case "1":
+	                return 7;
+	            case "2":
+	                return 6;
+	            case "3":
+	                return 5;
+	            case "4":
+	                return 4;
+	            case "5":
+	                return 3;
+	            case "6":
+	                return 2;
+	            case "7":
+	                return 1;
+	            default:
+	                return -1;
+
+	        }
+	    }
+	    
+	  //Convert fx e2e4 to 6444
+		public static String winboardToOurMoveConverter(String move) {
+
+			move=move.toUpperCase();
+			StringBuffer sb = new StringBuffer();
+			String[] parts = move.split("");
+			try {
+	            String tmp = parts[0];
+	            parts[0] = parts[1];
+	            parts[1] = tmp;
+	            tmp = parts[2];
+	            parts[2] = parts[3];
+	            parts[3] = tmp;
+
+	            sb.append(incomingNumbertoNumberConverter(parts[0]));
+	            sb.append(incomingLettertoNumberConverter(parts[1]));
+	            sb.append(incomingNumbertoNumberConverter(parts[2]));
+	            sb.append(incomingLettertoNumberConverter(parts[3]));
+	        }
+
+	        catch(ArrayIndexOutOfBoundsException e){
+			    return "";
+	        }
+	        checkMove(sb.toString());
+	        
+	        return sb.toString();
+
 		}
-	}
+
+		public static int incomingLettertoNumberConverter(String letter) {
+			switch (letter) {
+				case "A":
+					return 0;
+				case "B":
+					return 1;
+				case "C":
+					return 2;
+				case "D":
+					return 3;
+				case "E":
+					return 4;
+				case "F":
+					return 5;
+				case "G":
+					return 6;
+				case "H":
+					return 7;
+				default:
+					return -1;
+
+			}
+		}
+		public static int incomingNumbertoNumberConverter(String nr) {
+			switch (nr) {
+				case "8":
+					return 0;
+				case "7":
+					return 1;
+				case "6":
+					return 2;
+				case "5":
+					return 3;
+				case "4":
+					return 4;
+				case "3":
+					return 5;
+				case "2":
+					return 6;
+				case "1":
+					return 7;
+				default:
+					return -1;
+
+			}
+		}
 
 	//Check with the possibleMove list
 	public static boolean validMove(String move){
@@ -118,10 +193,29 @@ public class TUI {
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
-		boolean valid = validMove(move);
+		
+		String ourMove = winboardToOurMoveConverter(move);
+		if(asWhite){
+			ourMove = winboardToOurMoveConverter(move);
+		}else{
+			ourMove = winboardToOurMoveConverter(UserMoveBlack(move));
+		}		
+		System.out.println("ourmove" + ourMove);
+		
+		String yooo = checkMove(ourMove);
+		System.out.println("yooo" + yooo);
+	
+
+		
+		boolean valid = validMove(yooo);
 		if(valid){
-			Moves.makeMove(move);
-			ChessBoard.drawBoard();
+			Moves.makeMove(yooo);
+			if(asWhite){
+				ChessBoard.drawWhiteBoard();
+			}else{
+				ChessBoard.drawBlackBoard();
+			}
+			
 		}
 		else{
 			System.out.println("Unvalid move. try again!");
@@ -143,17 +237,51 @@ public class TUI {
 			String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
-			String moveEnemyConverted = enemyMove(moveEnemy);
+			String moveEnemyConverted;
+			if(asWhite){
+				moveEnemyConverted = ourMoveToWinboardConverter(enemyMoveWhite(moveEnemy));
+			}else{
+				moveEnemyConverted = ourMoveToWinboardConverter(moveEnemy);
+			}
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
 			playerTurn = 1;
-			ChessBoard.drawBoard();
-		}
+			if(asWhite){
+				ChessBoard.drawWhiteBoard();
+			}else{
+				ChessBoard.drawBlackBoard();
+			}		}
 	}
-	
+	//convert my move if black
+	public static String UserMoveBlack(String move){
+		String newMove = "";
+		for (int i = 0; i < 4; i++) {
+			String ch = move.substring(i,i+1);
+			switch (ch) {
+			case "0": ch = "7"; newMove += ch; 
+			break;
+			case "1": ch = "6"; newMove += ch; 
+			break;
+			case "2": ch = "5"; newMove += ch; 
+			break;
+			case "3": ch = "4"; newMove += ch; 
+			break;
+			case "4": ch = "3"; newMove += ch; 
+			break;
+			case "5": ch = "2"; newMove += ch; 
+			break;
+			case "6": ch = "1"; newMove += ch; 
+			break;
+			case "7": ch = "0"; newMove += ch; 
+			break;	
+			}
+		}
+
+		return newMove;		
+	}
 	//converts enemy move to be correct form
-	public static String enemyMove(String move){
+	public static String enemyMoveWhite(String move){
 		String newMove = "";
 		for (int i = 0; i < 4; i++) {
 			String ch = move.substring(i,i+1);
@@ -251,8 +379,11 @@ public class TUI {
 					}
 				}
 				ChessBoard.setBoard(newBoard);
-				ChessBoard.drawBoard();
-				return true;
+				if(asWhite){
+					ChessBoard.drawWhiteBoard();
+				}else{
+					ChessBoard.drawBlackBoard();
+				}				return true;
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");
@@ -264,8 +395,11 @@ public class TUI {
 	public static void whoStart(int whoStarts){
 		if(whoStarts == 1){
 			//user start/the game
-			ChessBoard.drawBoard();
-			while(!gameOver){
+			if(asWhite){
+				ChessBoard.drawWhiteBoard();
+			}else{
+				ChessBoard.drawBlackBoard();
+			}			while(!gameOver){
 				if(endGame()){
 					gameOver = true;
 					break;
@@ -276,8 +410,11 @@ public class TUI {
 			}
 		}else{
 			//enemy start/the game
-			ChessBoard.drawBoard();
-			while(!gameOver){
+			if(asWhite){
+				ChessBoard.drawWhiteBoard();
+			}else{
+				ChessBoard.drawBlackBoard();
+			}			while(!gameOver){
 				enemyTurn();
 				if(endGame()){
 					gameOver = true;
@@ -300,5 +437,27 @@ public class TUI {
 			}
 		}
 		return newMoves;
+	}
+	
+	public static String checkMove(String move) {
+		System.out.println(move);
+		System.out.println(ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))] == "P" && Character.getNumericValue((move.charAt(0))) == 1);
+		System.out.println("oldpos " + ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))]);
+		System.out.println("valueof0 "+String.valueOf(move.charAt(0)));
+		if(ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))] == "P" && Character.getNumericValue((move.charAt(0))) == 1){
+			if(ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] != " "){
+				return move + ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] + "P";
+
+			}else{
+				return move + " P";
+			}
+		}else{
+			if(ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] != " "){
+				return move + ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] + " ";
+			}
+			else{
+				return move + "  ";
+			}
+		}
 	}
 }

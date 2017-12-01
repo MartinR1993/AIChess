@@ -244,7 +244,7 @@ thread.start();
 		if(!(valid.equals(""))){
 			Moves.makeMove(move);
             System.out.println("Making move: "+move);
-			ChessBoard.drawBoard();
+//			ChessBoard.drawBoard();
 		}
 		else{
 			System.out.println("Invalid move '"+getLastLine()+"'**'"+move+"'. try again!");
@@ -277,7 +277,7 @@ thread.start();
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
 			playerTurn = 1;
-			ChessBoard.drawBoard();
+//			ChessBoard.drawBoard();
 		}
 	}
 	
@@ -384,7 +384,7 @@ thread.start();
                                 }
                             }
                             ChessBoard.setBoard(newBoard);
-                            ChessBoard.drawBoard();
+//                            ChessBoard.drawBoard();
                             
                             return true;
 			}
@@ -405,7 +405,7 @@ thread.start();
 			if(whoStarts == 1){
 				//user start/the game
            //     frame = new Winboard();
-				ChessBoard.drawBoard();
+//				ChessBoard.drawBoard();
 				while(!gameOver){
 					if(endGame()){
 						gameOver = true;
@@ -417,7 +417,7 @@ thread.start();
 				}
 			}else{
 				//enemy start/the game
-				ChessBoard.drawBoard();
+//				ChessBoard.drawBoard();
 				while(!gameOver){
 					enemyTurn();
 					if(endGame()){
