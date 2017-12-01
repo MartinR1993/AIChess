@@ -10,23 +10,26 @@ public class TUI {
 	static boolean gameOver = false;
 	public static int playerTurn;
 	public static int playAsWhite;
+	public static boolean asWhite; 
 
 	public static void playgame(){
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
-                
-                //continue game
+
+		//continue game
 		System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
 		boolean boo = continueGame();
-                if(!boo){
-                    //player as white
-                    System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
-                    playerAsWhite();
-                }		
-                //Who starts/the game
-		System.out.println("Do you want to start? \n1. Yes\n2. No");
-		whoStart();
-               
+		if(!boo){
+			//player as white
+			System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
+			asWhite = playerAsWhite();
+		}		
+		//Who starts
+		if(asWhite){
+			whoStart(1);
+		}else{
+			whoStart(2);
+		}
 	}
 	
 	//Convert fx 6444 to e2e4 (also with capping)
@@ -47,9 +50,7 @@ public class TUI {
 		sb.append(number2NumberConverter(parts[2]));
 		sb.append(letter2NumberConverter(parts[3]));
 
-
 		return sb.toString();
-
 	}
 
 	public int letter2NumberConverter(String letter) {
@@ -72,9 +73,9 @@ public class TUI {
 				return 7;
 			default:
 				return -1;
-
 		}
 	}
+	
 	public int number2NumberConverter(String nr) {
 		switch (nr) {
 			case "8":
@@ -95,7 +96,6 @@ public class TUI {
 				return 7;
 			default:
 				return -1;
-
 		}
 	}
 
@@ -129,6 +129,7 @@ public class TUI {
 		}
 		playerTurn = 0;
 	}
+	
 	public static void enemyTurn(){
 		playerTurn = 0;
 		int beta = Integer.MAX_VALUE;
@@ -212,89 +213,79 @@ public class TUI {
 		return false;
 	}
 	
-	public static void playerAsWhite(){
+	public static boolean playerAsWhite(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		playAsWhite = scan.nextInt();
 		if(playAsWhite == 1 || playAsWhite == 2){
 			if(playAsWhite == 2){
 				AlphaBetaPruning.flipBoard();
+				return false;
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");
 			playerAsWhite();
 		}
+		return true;
 	}
         
-        	public static boolean continueGame(){
-//		@SuppressWarnings("resource")
+	public static boolean continueGame(){
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		int continueChoice = scan.nextInt();
 		if(continueChoice == 1 || continueChoice == 2){
-                        if(continueChoice == 1){
-                            String boardString = scan.next();
-                            System.out.println(boardString);
-                            
-                            String newBoard[][] = new String[8][8];
-                            
-                            
-                            for (int i = 0; i < 8; i++) {
-                                for (int j = 0; j < 8; j++) {
- 
-                                    if (boardString.charAt(i+(j*8)) == '0') {
-                                        newBoard[j][i]=" ";
-                                    }else{
-                                    newBoard[j][i]=boardString.charAt(i+(j*8))+"";   
-                                    }
-                                    
-                                }
-                            }
-                            ChessBoard.setBoard(newBoard);
-                            ChessBoard.drawBoard();
-                            
-                            return true;
+			if(continueChoice == 1){
+				String boardString = scan.next();
+//				System.out.println(boardString);
+
+				String newBoard[][] = new String[8][8];
+
+				for (int i = 0; i < 8; i++) {
+					for (int j = 0; j < 8; j++) {
+
+						if (boardString.charAt(i+(j*8)) == '0') {
+							newBoard[j][i]=" ";
+						}else{
+							newBoard[j][i]=boardString.charAt(i+(j*8))+"";   
+						}
+					}
+				}
+				ChessBoard.setBoard(newBoard);
+				ChessBoard.drawBoard();
+				return true;
 			}
-                        
 		}else{
 			System.out.println("Not legal choice. Try again!");
 			continueGame();
 		}
-                return false;
+		return false;
 	}
 	
-	public static void whoStart(){
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		int whoStarts = scan.nextInt();
-		if(whoStarts == 1 || whoStarts == 2){
-			if(whoStarts == 1){
-				//user start/the game
-				ChessBoard.drawBoard();
-				while(!gameOver){
-					if(endGame()){
-						gameOver = true;
-						break;
-					}else{
+	public static void whoStart(int whoStarts){
+		if(whoStarts == 1){
+			//user start/the game
+			ChessBoard.drawBoard();
+			while(!gameOver){
+				if(endGame()){
+					gameOver = true;
+					break;
+				}else{
 					userTurn();
 					enemyTurn();
-					}
-				}
-			}else{
-				//enemy start/the game
-				ChessBoard.drawBoard();
-				while(!gameOver){
-					enemyTurn();
-					if(endGame()){
-						gameOver = true;
-						break;
-					}else{
-					userTurn();
-					}
 				}
 			}
 		}else{
-			System.out.println("Not legal choice. Try again!");
-			whoStart();
+			//enemy start/the game
+			ChessBoard.drawBoard();
+			while(!gameOver){
+				enemyTurn();
+				if(endGame()){
+					gameOver = true;
+					break;
+				}else{
+					userTurn();
+				}
+			}
 		}
 	}
 	
@@ -310,7 +301,4 @@ public class TUI {
 		}
 		return newMoves;
 	}
-
-
-
 }
