@@ -195,26 +195,26 @@ public class TUI {
 		String move = scan.nextLine();
 		
 		String ourMove = winboardToOurMoveConverter(move);
-		if(asWhite){
-			ourMove = winboardToOurMoveConverter(move);
-		}else{
-			ourMove = winboardToOurMoveConverter(UserMoveBlack(move));
-		}		
-		System.out.println("ourmove" + ourMove);
-		
-		String yooo = checkMove(ourMove);
-		System.out.println("yooo" + yooo);
+//		if(asWhite){
+			ourMove = checkMove(winboardToOurMoveConverter(move));
+//		}else{
+//			ourMove = winboardToOurMoveConverter(UserMoveBlack(move));
+//		}		
+//		System.out.println("ourmove" + ourMove);
+//		
+//		String yooo = checkMove(ourMove);
+//		System.out.println("yooo" + yooo);
 	
 
 		
-		boolean valid = validMove(yooo);
+		boolean valid = validMove(ourMove);
 		if(valid){
-			Moves.makeMove(yooo);
-			if(asWhite){
+			Moves.makeMove(ourMove);
+//			if(asWhite){
 				ChessBoard.drawWhiteBoard();
-			}else{
-				ChessBoard.drawBlackBoard();
-			}
+//			}else{
+//				ChessBoard.drawBlackBoard();
+//			}
 			
 		}
 		else{
@@ -238,48 +238,49 @@ public class TUI {
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
 			String moveEnemyConverted;
-			if(asWhite){
+//			if(asWhite){
 				moveEnemyConverted = ourMoveToWinboardConverter(enemyMoveWhite(moveEnemy));
-			}else{
-				moveEnemyConverted = ourMoveToWinboardConverter(moveEnemy);
-			}
+//			}else{
+//				moveEnemyConverted = ourMoveToWinboardConverter(moveEnemy);
+//			}
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
 			playerTurn = 1;
-			if(asWhite){
+//			if(asWhite){
 				ChessBoard.drawWhiteBoard();
-			}else{
-				ChessBoard.drawBlackBoard();
-			}		}
+//			}else{
+//				ChessBoard.drawBlackBoard();
+//			}		
+			}
 	}
 	//convert my move if black
-	public static String UserMoveBlack(String move){
-		String newMove = "";
-		for (int i = 0; i < 4; i++) {
-			String ch = move.substring(i,i+1);
-			switch (ch) {
-			case "0": ch = "7"; newMove += ch; 
-			break;
-			case "1": ch = "6"; newMove += ch; 
-			break;
-			case "2": ch = "5"; newMove += ch; 
-			break;
-			case "3": ch = "4"; newMove += ch; 
-			break;
-			case "4": ch = "3"; newMove += ch; 
-			break;
-			case "5": ch = "2"; newMove += ch; 
-			break;
-			case "6": ch = "1"; newMove += ch; 
-			break;
-			case "7": ch = "0"; newMove += ch; 
-			break;	
-			}
-		}
-
-		return newMove;		
-	}
+//	public static String UserMoveBlack(String move){
+//		String newMove = "";
+//		for (int i = 0; i < 4; i++) {
+//			String ch = move.substring(i,i+1);
+//			switch (ch) {
+//			case "0": ch = "7"; newMove += ch; 
+//			break;
+//			case "1": ch = "6"; newMove += ch; 
+//			break;
+//			case "2": ch = "5"; newMove += ch; 
+//			break;
+//			case "3": ch = "4"; newMove += ch; 
+//			break;
+//			case "4": ch = "3"; newMove += ch; 
+//			break;
+//			case "5": ch = "2"; newMove += ch; 
+//			break;
+//			case "6": ch = "1"; newMove += ch; 
+//			break;
+//			case "7": ch = "0"; newMove += ch; 
+//			break;	
+//			}
+//		}
+//
+//		return newMove;		
+//	}
 	//converts enemy move to be correct form
 	public static String enemyMoveWhite(String move){
 		String newMove = "";
@@ -379,11 +380,12 @@ public class TUI {
 					}
 				}
 				ChessBoard.setBoard(newBoard);
-				if(asWhite){
+//				if(asWhite){
 					ChessBoard.drawWhiteBoard();
-				}else{
-					ChessBoard.drawBlackBoard();
-				}				return true;
+//				}else{
+//					ChessBoard.drawBlackBoard();
+//				}				
+				return true;
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");
@@ -395,11 +397,12 @@ public class TUI {
 	public static void whoStart(int whoStarts){
 		if(whoStarts == 1){
 			//user start/the game
-			if(asWhite){
+//			if(asWhite){
 				ChessBoard.drawWhiteBoard();
-			}else{
-				ChessBoard.drawBlackBoard();
-			}			while(!gameOver){
+//			}else{
+//				ChessBoard.drawBlackBoard();
+//			}			
+			while(!gameOver){
 				if(endGame()){
 					gameOver = true;
 					break;
@@ -410,11 +413,12 @@ public class TUI {
 			}
 		}else{
 			//enemy start/the game
-			if(asWhite){
+//			if(asWhite){
 				ChessBoard.drawWhiteBoard();
-			}else{
-				ChessBoard.drawBlackBoard();
-			}			while(!gameOver){
+//			}else{
+//				ChessBoard.drawBlackBoard();
+//			}			
+			while(!gameOver){
 				enemyTurn();
 				if(endGame()){
 					gameOver = true;
@@ -431,19 +435,16 @@ public class TUI {
 		String newMoves = "";
 		for (int i = 0; i < moves.length(); i+=6) {
 			if(moves.charAt(i+4) != ' '){
-				newMoves += "["+moves.substring(i, i+6)+"] ";
+				newMoves += "["+ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
 			}else{
-				newMoves += "["+moves.substring(i, i+6)+"] ";
+				newMoves += "["+ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
 			}
 		}
 		return newMoves;
 	}
 	
 	public static String checkMove(String move) {
-		System.out.println(move);
-		System.out.println(ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))] == "P" && Character.getNumericValue((move.charAt(0))) == 1);
-		System.out.println("oldpos " + ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))]);
-		System.out.println("valueof0 "+String.valueOf(move.charAt(0)));
+		//Pawnpromotion
 		if(ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))] == "P" && Character.getNumericValue((move.charAt(0))) == 1){
 			if(ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] != " "){
 				return move + ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] + "P";
@@ -451,6 +452,7 @@ public class TUI {
 			}else{
 				return move + " P";
 			}
+		//Normal move
 		}else{
 			if(ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] != " "){
 				return move + ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] + " ";

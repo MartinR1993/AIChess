@@ -53,8 +53,8 @@ public class ChessBoard {
 	
 	public static void drawWhiteBoard(){
 		int temp = 8;
-		System.out.println("\nThe Board: ");
-//		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+//		System.out.println("  -  -  -  -  -  -  -  -");
 //		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
                 String str ="";
                 for (int i = 0; i < 8; i++) {
@@ -62,7 +62,7 @@ public class ChessBoard {
 //			System.out.println(i + Arrays.toString(board[i]));
                         
                         
-			System.out.println(temp + Arrays.toString(board[i]));
+			System.out.println(temp + Arrays.toString(board[i]) + temp);
 			temp--;
 
 		}
@@ -70,6 +70,7 @@ public class ChessBoard {
 
                 
     			//String for continuegame
+    			System.out.print("FEN string: ");
                 for (int i = 0; i < 8; i++) {
                     for (int j = 0; j < 8; j++) {
                             str = str + board[i][j]; 
@@ -79,31 +80,31 @@ public class ChessBoard {
                 System.out.println(str);
                 
 	}
-	public static void drawBlackBoard(){
-		int temp = 1;
-		System.out.println("\nThe Board: ");
-//		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
-//		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
-                String str ="";
-                for (int i = 0; i < 8; i++) {
-			//java.util.Arrays sets up the print nice
-//			System.out.println(i + Arrays.toString(board[i]));
-                        
-			System.out.println(temp + Arrays.toString(board[i]));
-			temp++;
-			
-
-		}
-    			System.out.println("  h  g  f  e  d  c  b  a");
-                
-    			//String for continuegame
-                for (int i = 0; i < 8; i++) {
-                    for (int j = 0; j < 8; j++) {
-                            str = str + board[i][j]; 
-                    }
-                }
-                  str =  str.replaceAll(" ", "0");
-                System.out.println(str);
-                
-	}
+//	public static void drawBlackBoard(){
+//		int temp = 1;
+//		System.out.println("\nThe Board: \n  h  g  f  e  d  c  b  a");
+////		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+////		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
+//                String str ="";
+//                for (int i = 0; i < 8; i++) {
+//			//java.util.Arrays sets up the print nice
+////			System.out.println(i + Arrays.toString(board[i]));
+//                        
+//			System.out.println(temp + Arrays.toString(board[i]) + temp);
+//			temp++;
+//			
+//
+//		}
+//    			System.out.println("  h  g  f  e  d  c  b  a");
+//                
+//    			//String for continuegame
+//                for (int i = 0; i < 8; i++) {
+//                    for (int j = 0; j < 8; j++) {
+//                            str = str + board[i][j]; 
+//                    }
+//                }
+//                  str =  str.replaceAll(" ", "0");
+//                System.out.println(str);
+//                
+//	}
 }

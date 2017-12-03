@@ -132,7 +132,7 @@ public class Rating {
 	}
 	public static int rateMoveability(int listLength, int depth, int material){
 		int counter = 0;
-		//5 points per move
+		//6 points per move
 		counter += listLength;
 		//checkmate or stalemate
 		if(listLength==0) {
@@ -150,21 +150,26 @@ public class Rating {
 	public static int ratePositional(int material){
 		int counter=0;
         for (int i=0;i<64;i++) {
-            switch (ChessBoard.board[i/8][i%8]) {
-                case "P": counter+=pawnBoard[i/8][i%8];
-                    break;
-                case "R": counter+=rookBoard[i/8][i%8];
-                    break;
-                case "K": counter+=knightBoard[i/8][i%8];
-                    break;
-                case "B": counter+=bishopBoard[i/8][i%8];
-                    break;
-                case "Q": counter+=queenBoard[i/8][i%8];
-                    break;
-                case "A": if (material>=1750) {counter+=kingMidBoard[i/8][i%8]; counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*10;} else
-                {counter+=kingEndBoard[i/8][i%8]; counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*30;}
-                    break;
-            }
+        	switch (ChessBoard.board[i/8][i%8]) {
+        	case "P": counter+=pawnBoard[i/8][i%8];
+        		break;
+        	case "R": counter+=rookBoard[i/8][i%8];
+        		break;
+        	case "K": counter+=knightBoard[i/8][i%8];
+        		break;
+        	case "B": counter+=bishopBoard[i/8][i%8];
+        		break;
+        	case "Q": counter+=queenBoard[i/8][i%8];
+        		break;
+        	case "A": if (material>=1750) {
+        		counter+=kingMidBoard[i/8][i%8]; 
+        		counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*10;
+        	}else{
+        		counter+=kingEndBoard[i/8][i%8]; 
+        		counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*30;
+        	}
+        		break;
+        	}
         }
         return counter;
 	}
