@@ -2,9 +2,6 @@ package Board;
 
 import java.util.Arrays;
 
-import Moves.AlphaBetaPruning;
-import Moves.Moves;
-
 public class ChessBoard {
 	//Real board
 	public static String board[][] = {

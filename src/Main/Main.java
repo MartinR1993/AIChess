@@ -1,9 +1,7 @@
 package Main;
 
 import Board.ChessBoard;
-import Interfaces.GUI;
 import Interfaces.TUI;
-import Interfaces.Winboard;
 
 public class Main {
 	public static void main(String[] args) {
