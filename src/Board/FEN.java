@@ -35,8 +35,17 @@ public class FEN {
     public FEN() {
         System.out.println("First test, start board");
         printFen(board, 1);
+        String board[][] = continueFen("rkbqabkr/pppppppp/8/8/8/8/PPPPPPPP/RKBQABKR");
+        printFenToBoard(board);
+
+        System.out.println("\n\n");
+        
+        
         System.out.println("Second test, random board");
         printFen(board2, 2);
+        String board2[][] = continueFen("r1bqabkr/pPpp1pPp/P7/P2p4/p2P1PP1/pp6/PPPPP1pP/RKBQABKR");
+        printFenToBoard(board2);
+        
 
     }
 
@@ -84,10 +93,117 @@ public class FEN {
         System.out.println(str);
     }
 
-    public String continueFen() {
-        return "";
+    public String[][] continueFen(String boardString) {
+    	String newBoard[][] = new String[8][8];
+    	
+    	boardString = boardString.substring(0, boardString.length());
+    	
+    	//Lav 1 om til 0, 2 om til 00;
+    	
+    	//Fjern /
+    	String str = "";
+    	
+    	for (int i = 0; i<boardString.length(); i++) {
+    		
+    		
+    		
+    		
+    		if (Character.isDigit(boardString.charAt(i))) {
+    			
+    			String number = boardString.substring(i, i+1);
+    			
+    			try {
+    				int num = Integer.parseInt(number);
+    				for (int j = 0; j<num; j++) {
+    					str+=" ";
+    				}
+    			} catch (NumberFormatException e) {
+    				
+    			}
+            }
+    		else {
+    			if (!boardString.substring(i, i+1).equals("/")){
+        			str+=boardString.substring(i, i+1);
+    			}
+    		}
+    			
+    	}
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+
+				if (str.charAt(i+(j*8)) == '0') {
+					newBoard[j][i]=" ";
+				}else{
+					newBoard[j][i]=str.charAt(i+(j*8))+"";   
+				}
+			}
+		}
+
+        
+    	
+    	
+    	
+        return newBoard;
+    }
+    
+    
+    public void printFenToBoard (String[][] board) {
+    	int temp = 8;
+		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+//		System.out.println("  -  -  -  -  -  -  -  -");
+//		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
+                String str ="";
+                for (int i = 0; i < 8; i++) {
+			//java.util.Arrays sets up the print nice
+//			System.out.println(i + Arrays.toString(board[i]));
+                        
+                        
+			System.out.println(temp + Arrays.toString(board[i]) + temp);
+			temp--;
+
+		}
+                System.out.println("  a  b  c  d  e  f  g  h");
     }
 
 
-
 }
+
+
+
+//
+//
+//public static String board[][] = {
+//	    //0   1   2   3   4   5   6   7
+//		{"r","k","b","q","a","b","k","r"},//0
+//		{"p","p","p","p","p","p","p","p"},//1
+//		{" "," "," "," "," "," "," "," "},//2
+//		{" "," "," "," "," "," "," "," "},//3
+//		{" "," "," "," "," "," "," "," "},//4
+//		{" "," "," "," "," "," "," "," "},//5
+//		{"P","P","P","P","P","P","P","P"},//6
+//		{"R","K","B","Q","A","B","K","R"}};//7	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
