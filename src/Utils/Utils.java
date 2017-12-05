@@ -7,8 +7,6 @@ import static Interfaces.TUI.checkMove;
  */
 public class Utils {
 
-
-
     public static int incomingLettertoNumberConverter(String letter) {
         switch (letter) {
             case "A":
@@ -29,9 +27,9 @@ public class Utils {
                 return 7;
             default:
                 return -1;
-
         }
     }
+    
     public static int incomingNumbertoNumberConverter(String nr) {
         switch (nr) {
             case "8":
@@ -52,7 +50,6 @@ public class Utils {
                 return 7;
             default:
                 return -1;
-
         }
     }
 
@@ -71,10 +68,9 @@ public class Utils {
         sb.append(outgoingNumbertoNumberConverter(parts[1]));
         sb.append(outgoingNumbertoLetterConverter(parts[2]));
         sb.append(outgoingNumbertoNumberConverter(parts[3]));
-
-
         return sb.toString();
     }
+    
     public static char outgoingNumbertoLetterConverter(String number) {
         switch (number) {
             case "0":
@@ -95,9 +91,9 @@ public class Utils {
                 return 'h';
             default:
                 return ' ';
-
         }
     }
+    
     public static int outgoingNumbertoNumberConverter(String nr) {
         switch (nr) {
             case "0":
@@ -118,7 +114,6 @@ public class Utils {
                 return 1;
             default:
                 return -1;
-
         }
     }
 
@@ -150,4 +145,32 @@ public class Utils {
         return sb.toString();
 
     }
+    
+    //converts enemy move to be correct form
+  	public static String enemyMove(String move){
+  		String newMove = "";
+  		for (int i = 0; i < 4; i++) {
+  			String ch = move.substring(i,i+1);
+  			switch (ch) {
+  			case "0": ch = "7"; newMove += ch; 
+  			break;
+  			case "1": ch = "6"; newMove += ch; 
+  			break;
+  			case "2": ch = "5"; newMove += ch; 
+  			break;
+  			case "3": ch = "4"; newMove += ch; 
+  			break;
+  			case "4": ch = "3"; newMove += ch; 
+  			break;
+  			case "5": ch = "2"; newMove += ch; 
+  			break;
+  			case "6": ch = "1"; newMove += ch; 
+  			break;
+  			case "7": ch = "0"; newMove += ch; 
+  			break;	
+  			}
+  		}
+  		newMove += move.toUpperCase().charAt(4);
+  		return newMove;		
+  	}
 }

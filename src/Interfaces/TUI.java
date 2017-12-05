@@ -4,6 +4,7 @@ package Interfaces;
 import java.util.Scanner;
 
 import Board.ChessBoard;
+import Board.FEN;
 import Moves.AlphaBetaPruning;
 import Moves.Moves;
 import Utils.Utils;
@@ -14,6 +15,7 @@ public class TUI {
 	public static int playAsWhite;
 	public static boolean asWhite;
 	public static Utils utils;
+	public static String boardString;
 
 	public static void playgame(){
 
@@ -27,18 +29,41 @@ public class TUI {
 			//player as white
 			System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
 			asWhite = playerAsWhite();
-		}		
-		//Who starts
-		if(asWhite){
-			whoStart(1);
+//			//Bigger case king position
+//			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
+//				ChessBoard.kingPositionC++;
+//			}
+//			//Lower case king position
+//			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
+//				ChessBoard.kingPositionL++;
+//			}
+			//Who starts
+			if(asWhite){
+				playerTurn = 0;
+				whoStart(1);
+			}else{
+				playerTurn = 1;
+				whoStart(2);
+			}
 		}else{
-			whoStart(2);
+			//Bigger case king position
+//			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
+//				ChessBoard.kingPositionC++;
+//			}
+//			//Lower case king position
+//			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
+//				ChessBoard.kingPositionL++;
+//			}
+			if(boardString.substring(boardString.length()-1).equals("u")){
+				playerTurn = 0;
+				whoStart(1);
+			}else if(boardString.substring(boardString.length()-1).equals("e")){
+				playerTurn = 1;
+				whoStart(2);
+			}
 		}
 	}
 	
-
-
-
 	//Check with the possibleMove list
 	public static boolean validMove(String move){
 		String possibleMoves = Moves.possibleMoves();
@@ -58,29 +83,12 @@ public class TUI {
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
-		
 		String ourMove = utils.winboardToOurMoveConverter(move);
-//		if(asWhite){
-			ourMove = checkMove(utils.winboardToOurMoveConverter(move));
-//		}else{
-//			ourMove = winboardToOurMoveConverter(UserMoveBlack(move));
-//		}		
-//		System.out.println("ourmove" + ourMove);
-//		
-//		String yooo = checkMove(ourMove);
-//		System.out.println("yooo" + yooo);
-	
-
-		
+		ourMove = checkMove(utils.winboardToOurMoveConverter(move));
 		boolean valid = validMove(ourMove);
 		if(valid){
 			Moves.makeMove(ourMove);
-//			if(asWhite){
-				ChessBoard.drawWhiteBoard();
-//			}else{
-//				ChessBoard.drawBlackBoard();
-//			}
-			
+			ChessBoard.drawBoard();	
 		}
 		else{
 			System.out.println("Unvalid move. try again!");
@@ -103,76 +111,15 @@ public class TUI {
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
 			String moveEnemyConverted;
-//			if(asWhite){
-				moveEnemyConverted = utils.ourMoveToWinboardConverter(enemyMoveWhite(moveEnemy));
-//			}else{
-//				moveEnemyConverted = ourMoveToWinboardConverter(moveEnemy);
-//			}
+			moveEnemyConverted = utils.ourMoveToWinboardConverter(utils.enemyMove(moveEnemy));
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
+			ChessBoard.drawBoard();
 			playerTurn = 1;
-//			if(asWhite){
-				ChessBoard.drawWhiteBoard();
-//			}else{
-//				ChessBoard.drawBlackBoard();
-//			}		
-			}
-	}
-	//convert my move if black
-//	public static String UserMoveBlack(String move){
-//		String newMove = "";
-//		for (int i = 0; i < 4; i++) {
-//			String ch = move.substring(i,i+1);
-//			switch (ch) {
-//			case "0": ch = "7"; newMove += ch; 
-//			break;
-//			case "1": ch = "6"; newMove += ch; 
-//			break;
-//			case "2": ch = "5"; newMove += ch; 
-//			break;
-//			case "3": ch = "4"; newMove += ch; 
-//			break;
-//			case "4": ch = "3"; newMove += ch; 
-//			break;
-//			case "5": ch = "2"; newMove += ch; 
-//			break;
-//			case "6": ch = "1"; newMove += ch; 
-//			break;
-//			case "7": ch = "0"; newMove += ch; 
-//			break;	
-//			}
-//		}
-//
-//		return newMove;		
-//	}
-	//converts enemy move to be correct form
-	public static String enemyMoveWhite(String move){
-		String newMove = "";
-		for (int i = 0; i < 4; i++) {
-			String ch = move.substring(i,i+1);
-			switch (ch) {
-			case "0": ch = "7"; newMove += ch; 
-			break;
-			case "1": ch = "6"; newMove += ch; 
-			break;
-			case "2": ch = "5"; newMove += ch; 
-			break;
-			case "3": ch = "4"; newMove += ch; 
-			break;
-			case "4": ch = "3"; newMove += ch; 
-			break;
-			case "5": ch = "2"; newMove += ch; 
-			break;
-			case "6": ch = "1"; newMove += ch; 
-			break;
-			case "7": ch = "0"; newMove += ch; 
-			break;	
-			}
 		}
-		newMove += move.toUpperCase().charAt(4);
-		return newMove;		
 	}
+
 	
 	//check mate or stale mate message
 	public static boolean endGame(){
@@ -229,27 +176,11 @@ public class TUI {
 		int continueChoice = scan.nextInt();
 		if(continueChoice == 1 || continueChoice == 2){
 			if(continueChoice == 1){
-				String boardString = scan.next();
-//				System.out.println(boardString);
-
-				String newBoard[][] = new String[8][8];
-
-				for (int i = 0; i < 8; i++) {
-					for (int j = 0; j < 8; j++) {
-
-						if (boardString.charAt(i+(j*8)) == '0') {
-							newBoard[j][i]=" ";
-						}else{
-							newBoard[j][i]=boardString.charAt(i+(j*8))+"";   
-						}
-					}
-				}
-				ChessBoard.setBoard(newBoard);
-//				if(asWhite){
-					ChessBoard.drawWhiteBoard();
-//				}else{
-//					ChessBoard.drawBlackBoard();
-//				}				
+				boardString = scan.next();
+				boardString += " " + scan.next();
+				System.out.println(boardString);
+				String [][] newBoard = FEN.continueFen(boardString);
+				ChessBoard.setBoard(newBoard);				
 				return true;
 			}
 		}else{
@@ -262,11 +193,7 @@ public class TUI {
 	public static void whoStart(int whoStarts){
 		if(whoStarts == 1){
 			//user start/the game
-//			if(asWhite){
-				ChessBoard.drawWhiteBoard();
-//			}else{
-//				ChessBoard.drawBlackBoard();
-//			}			
+			ChessBoard.drawBoard();	
 			while(!gameOver){
 				if(endGame()){
 					gameOver = true;
@@ -278,11 +205,7 @@ public class TUI {
 			}
 		}else{
 			//enemy start/the game
-//			if(asWhite){
-				ChessBoard.drawWhiteBoard();
-//			}else{
-//				ChessBoard.drawBlackBoard();
-//			}			
+			ChessBoard.drawBoard();
 			while(!gameOver){
 				enemyTurn();
 				if(endGame()){

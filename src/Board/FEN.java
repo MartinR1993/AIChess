@@ -31,25 +31,22 @@ public class FEN {
         new FEN();
     }
 
-
     public FEN() {
         System.out.println("First test, start board");
-        printFen(board, 1);
-        String board[][] = continueFen("rkbqabkr/pppppppp/8/8/8/8/PPPPPPPP/RKBQABKR");
+        printFen(board, 0);
+        String board[][] = continueFen("rkbqabkr/pppppppp/8/8/8/8/PPPPPPPP/RKBQABKR - w");
         printFenToBoard(board);
 
         System.out.println("\n\n");
         
-        
         System.out.println("Second test, random board");
-        printFen(board2, 2);
-        String board2[][] = continueFen("r1bqabkr/pPpp1pPp/P7/P2p4/p2P1PP1/pp6/PPPPP1pP/RKBQABKR");
+        printFen(board2, 1);
+        String board2[][] = continueFen("r1bqabkr/pPpp1pPp/P7/P2p4/p2P1PP1/pp6/PPPPP1pP/RKBQABKR - b");
+        System.out.println(board2);
         printFenToBoard(board2);
-        
-
     }
 
-    public void printFen(String board[][], int playerTurn) {
+    public static void printFen(String board[][], int playerTurn) {
         String str ="";
         int count;
 
@@ -72,61 +69,54 @@ public class FEN {
                 str+="/";
         }
 
-        //Add hvis tur det er (w/b)
+        //Add hvis tur det er (u/e)
+        if (playerTurn == 0)
+            str+=" u";
         if (playerTurn == 1)
-            str+=" w";
-        if (playerTurn == 2)
-            str+=" b";
+            str+=" e";
 
-        //Noget castling ???    -> Also pretty easy. 'K' is for kingside castling for white, 'q' is for queenside castling for black. If there is none available, '-' is used.
-        str+=" KQkq";
-
-        //En passant ???    -> Usually not important, but you do show this by putting the target square for the capture. If there is none, place a '-'.
-        str+=" -";
-
-        //Half move mount ???    -> Pretty self explanatory. Number of half moves since a pawn or a piece was moved.
-        str+=" 0";
-
-        //Full move count ???    -> Even more self explanatory. It's the number that you would see in algebraic notation.
-        str+=" 0";
+//        //Noget castling ???    -> Also pretty easy. 'K' is for kingside castling for white, 'q' is for queenside castling for black. If there is none available, '-' is used.
+//        str+=" KQkq";
+//
+//        //En passant ???    -> Usually not important, but you do show this by putting the target square for the capture. If there is none, place a '-'.
+//        str+=" -";
+//
+//        //Half move mount ???    -> Pretty self explanatory. Number of half moves since a pawn or a piece was moved.
+//        str+=" 0";
+//
+//        //Full move count ???    -> Even more self explanatory. It's the number that you would see in algebraic notation.
+//        str+=" 0";
 
         System.out.println(str);
     }
 
-    public String[][] continueFen(String boardString) {
+    public static String[][] continueFen(String boardString) {
     	String newBoard[][] = new String[8][8];
-    	
     	boardString = boardString.substring(0, boardString.length());
-    	
+
     	//Lav 1 om til 0, 2 om til 00;
-    	
+
     	//Fjern /
     	String str = "";
-    	
-    	for (int i = 0; i<boardString.length(); i++) {
-    		
-    		
-    		
-    		
+
+    	for (int i = 0; i<boardString.length(); i++) {    		
     		if (Character.isDigit(boardString.charAt(i))) {
-    			
+
     			String number = boardString.substring(i, i+1);
-    			
+
     			try {
     				int num = Integer.parseInt(number);
     				for (int j = 0; j<num; j++) {
     					str+=" ";
     				}
-    			} catch (NumberFormatException e) {
-    				
-    			}
-            }
+    			} catch (NumberFormatException e) {}
+    		}
     		else {
     			if (!boardString.substring(i, i+1).equals("/")){
-        			str+=boardString.substring(i, i+1);
+    				str+=boardString.substring(i, i+1);
     			}
     		}
-    			
+
     	}
 
 		for (int i = 0; i < 8; i++) {
@@ -139,71 +129,17 @@ public class FEN {
 				}
 			}
 		}
-
-        
-    	
-    	
-    	
         return newBoard;
     }
     
     
     public void printFenToBoard (String[][] board) {
     	int temp = 8;
-		System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
-//		System.out.println("  -  -  -  -  -  -  -  -");
-//		System.out.println("\nThe Board: \n  0  1  2  3  4  5  6  7");
-                String str ="";
-                for (int i = 0; i < 8; i++) {
-			//java.util.Arrays sets up the print nice
-//			System.out.println(i + Arrays.toString(board[i]));
-                        
-                        
-			System.out.println(temp + Arrays.toString(board[i]) + temp);
-			temp--;
-
-		}
-                System.out.println("  a  b  c  d  e  f  g  h");
+    	System.out.println("\nThe Board: \n  a  b  c  d  e  f  g  h");
+    	for (int i = 0; i < 8; i++) {            
+    		System.out.println(temp + Arrays.toString(board[i]) + temp);
+    		temp--;
+    	}
+    	System.out.println("  a  b  c  d  e  f  g  h");
     }
-
-
 }
-
-
-
-//
-//
-//public static String board[][] = {
-//	    //0   1   2   3   4   5   6   7
-//		{"r","k","b","q","a","b","k","r"},//0
-//		{"p","p","p","p","p","p","p","p"},//1
-//		{" "," "," "," "," "," "," "," "},//2
-//		{" "," "," "," "," "," "," "," "},//3
-//		{" "," "," "," "," "," "," "," "},//4
-//		{" "," "," "," "," "," "," "," "},//5
-//		{"P","P","P","P","P","P","P","P"},//6
-//		{"R","K","B","Q","A","B","K","R"}};//7	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
