@@ -63,6 +63,6 @@ public class ChessBoard {
  
     			//String for continuegame
     			System.out.print("FEN string: ");
-    			FEN.printFen(board, TUI.playerTurn);           
+    			FEN.printFen(board, TUI.playerTurn, TUI.asWhite);           
 	}
 }

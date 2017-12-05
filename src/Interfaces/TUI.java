@@ -29,6 +29,9 @@ public class TUI {
 			//player as white
 			System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
 			asWhite = playerAsWhite();
+                        
+                        
+                        
 //			//Bigger case king position
 //			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
 //				ChessBoard.kingPositionC++;
@@ -54,13 +57,16 @@ public class TUI {
 //			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
 //				ChessBoard.kingPositionL++;
 //			}
-			if(boardString.substring(boardString.length()-1).equals("u")){
+System.out.println(boardString.substring(boardString.length()-2));
+			if(boardString.substring(boardString.length()-2).startsWith("u")){
 				playerTurn = 0;
 				whoStart(1);
-			}else if(boardString.substring(boardString.length()-1).equals("e")){
+			}else if(boardString.substring(boardString.length()-2).startsWith("e")){
 				playerTurn = 1;
 				whoStart(2);
-			}
+			}else{
+                            System.out.println("lal");
+                        }
 		}
 	}
 	
@@ -173,15 +179,28 @@ public class TUI {
 	public static boolean continueGame(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
+                System.out.println(ChessBoard.kingPositionC + " "+ ChessBoard.kingPositionL);
 		int continueChoice = scan.nextInt();
 		if(continueChoice == 1 || continueChoice == 2){
 			if(continueChoice == 1){
 				boardString = scan.next();
 				boardString += " " + scan.next();
-				System.out.println(boardString);
+                                boardString += " ";
+                                int aC = scan.nextInt();
+                                ChessBoard.kingPositionC = aC ;
+                                System.out.println(aC+"tester1");
+                                int aL = scan.nextInt();
+                                System.out.println(aL+"tester2");
+                                ChessBoard.kingPositionL = aL;
+//                                boardString += aC+" "+aL;
+                                
+				System.out.println(boardString+"test");
 				String [][] newBoard = FEN.continueFen(boardString);
 				ChessBoard.setBoard(newBoard);				
-				return true;
+				
+                                
+                                
+                                return true;
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");

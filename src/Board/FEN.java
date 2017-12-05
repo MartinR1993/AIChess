@@ -26,27 +26,27 @@ public class FEN {
 			{"R","K","B","Q","A","B","K","R"}};//7
 
 
-    public static void main(String[] args) {
-        //Test af FEN print
-        new FEN();
-    }
+//    public static void main(String[] args) {
+//        //Test af FEN print
+//        new FEN();
+//    }
 
     public FEN() {
         System.out.println("First test, start board");
-        printFen(board, 0);
+        printFen(board, 0,false);
         String board[][] = continueFen("rkbqabkr/pppppppp/8/8/8/8/PPPPPPPP/RKBQABKR - w");
         printFenToBoard(board);
 
         System.out.println("\n\n");
         
         System.out.println("Second test, random board");
-        printFen(board2, 1);
+        printFen(board2, 1,true);
         String board2[][] = continueFen("r1bqabkr/pPpp1pPp/P7/P2p4/p2P1PP1/pp6/PPPPP1pP/RKBQABKR - b");
         System.out.println(board2);
         printFenToBoard(board2);
     }
 
-    public static void printFen(String board[][], int playerTurn) {
+    public static void printFen(String board[][], int playerTurn, boolean asWhite) {
         String str ="";
         int count;
 
@@ -74,7 +74,15 @@ public class FEN {
             str+=" u";
         if (playerTurn == 1)
             str+=" e";
+        
+//        if(asWhite){
+//            str+=" x";
+//        }else{
+//            str+=" y";
+//        }
 
+        str+= ChessBoard.kingPositionC + " " + ChessBoard.kingPositionL;
+        
 //        //Noget castling ???    -> Also pretty easy. 'K' is for kingside castling for white, 'q' is for queenside castling for black. If there is none available, '-' is used.
 //        str+=" KQkq";
 //
