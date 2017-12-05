@@ -14,7 +14,6 @@ public class TUI {
 	public static int playerTurn;
 	public static int playAsWhite;
 	public static boolean asWhite;
-	public static Utils utils;
 	public static String boardString;
 
 	public static void playgame(){
@@ -26,20 +25,19 @@ public class TUI {
 		System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
 		boolean boo = continueGame();
 		if(!boo){
+			//Bigger case king position
+			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
+				ChessBoard.kingPositionC++;
+			}
+			//Lower case king position
+			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
+				ChessBoard.kingPositionL++;
+			}
+			
 			//player as white
 			System.out.println("Do you want to play as white or black. \n1. White\n2. Black");
 			asWhite = playerAsWhite();
                         
-                        
-                        
-//			//Bigger case king position
-//			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
-//				ChessBoard.kingPositionC++;
-//			}
-//			//Lower case king position
-//			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
-//				ChessBoard.kingPositionL++;
-//			}
 			//Who starts
 			if(asWhite){
 				playerTurn = 0;
@@ -49,24 +47,14 @@ public class TUI {
 				whoStart(2);
 			}
 		}else{
-			//Bigger case king position
-//			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
-//				ChessBoard.kingPositionC++;
-//			}
-//			//Lower case king position
-//			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
-//				ChessBoard.kingPositionL++;
-//			}
-System.out.println(boardString.substring(boardString.length()-2));
+			System.out.println(boardString.substring(boardString.length()-2));
 			if(boardString.substring(boardString.length()-2).startsWith("u")){
 				playerTurn = 0;
 				whoStart(1);
 			}else if(boardString.substring(boardString.length()-2).startsWith("e")){
 				playerTurn = 1;
 				whoStart(2);
-			}else{
-                            System.out.println("lal");
-                        }
+			}
 		}
 	}
 	
@@ -89,8 +77,8 @@ System.out.println(boardString.substring(boardString.length()-2));
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
-		String ourMove = utils.winboardToOurMoveConverter(move);
-		ourMove = checkMove(utils.winboardToOurMoveConverter(move));
+		String ourMove = Utils.winboardToOurMoveConverter(move);
+		ourMove = checkMove(Utils.winboardToOurMoveConverter(move));
 		boolean valid = validMove(ourMove);
 		if(valid){
 			Moves.makeMove(ourMove);
@@ -117,7 +105,7 @@ System.out.println(boardString.substring(boardString.length()-2));
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
 			String moveEnemyConverted;
-			moveEnemyConverted = utils.ourMoveToWinboardConverter(utils.enemyMove(moveEnemy));
+			moveEnemyConverted = Utils.ourMoveToWinboardConverter(Utils.enemyMove(moveEnemy));
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
@@ -179,28 +167,19 @@ System.out.println(boardString.substring(boardString.length()-2));
 	public static boolean continueGame(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
-                System.out.println(ChessBoard.kingPositionC + " "+ ChessBoard.kingPositionL);
 		int continueChoice = scan.nextInt();
 		if(continueChoice == 1 || continueChoice == 2){
 			if(continueChoice == 1){
 				boardString = scan.next();
 				boardString += " " + scan.next();
-                                boardString += " ";
-                                int aC = scan.nextInt();
-                                ChessBoard.kingPositionC = aC ;
-                                System.out.println(aC+"tester1");
-                                int aL = scan.nextInt();
-                                System.out.println(aL+"tester2");
-                                ChessBoard.kingPositionL = aL;
-//                                boardString += aC+" "+aL;
-                                
-				System.out.println(boardString+"test");
+				int aC = scan.nextInt();
+				ChessBoard.kingPositionC = aC ;
+				int aL = scan.nextInt();
+				ChessBoard.kingPositionL = aL;
 				String [][] newBoard = FEN.continueFen(boardString);
 				ChessBoard.setBoard(newBoard);				
-				
-                                
-                                
-                                return true;
+
+				return true;
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");
@@ -242,9 +221,9 @@ System.out.println(boardString.substring(boardString.length()-2));
 		String newMoves = "";
 		for (int i = 0; i < moves.length(); i+=6) {
 			if(moves.charAt(i+4) != ' '){
-				newMoves += "["+utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
+				newMoves += "["+Utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
 			}else{
-				newMoves += "["+utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
+				newMoves += "["+Utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
 			}
 		}
 		return newMoves;

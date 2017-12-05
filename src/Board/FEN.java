@@ -81,7 +81,7 @@ public class FEN {
 //            str+=" y";
 //        }
 
-        str+= ChessBoard.kingPositionC + " " + ChessBoard.kingPositionL;
+        str+= " " + ChessBoard.kingPositionC + " " + ChessBoard.kingPositionL;
         
 //        //Noget castling ???    -> Also pretty easy. 'K' is for kingside castling for white, 'q' is for queenside castling for black. If there is none available, '-' is used.
 //        str+=" KQkq";
