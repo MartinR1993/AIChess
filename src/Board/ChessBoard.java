@@ -44,7 +44,6 @@ public class ChessBoard {
     public static void setBoard(String[][] board) {
         ChessBoard.board = board;
     }
-	
 	//Case king
 	public static int kingPositionC;
 	//Lowercase king
@@ -57,10 +56,8 @@ public class ChessBoard {
 			//java.util.Arrays sets up the print nice                    
 			System.out.println(temp + Arrays.toString(board[i]) + temp);
 			temp--;
-
 		}
     			System.out.println("  a  b  c  d  e  f  g  h");
- 
     			//String for continuegame
     			System.out.print("FEN string: ");
     			FEN.printFen(board, TUI.playerTurn, TUI.asWhite);           

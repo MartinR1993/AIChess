@@ -6,7 +6,6 @@ import static Interfaces.TUI.checkMove;
  * Created by as on 12/5/17.
  */
 public class Utils {
-
     public static int incomingLettertoNumberConverter(String letter) {
         switch (letter) {
             case "A":
@@ -54,8 +53,7 @@ public class Utils {
     }
 
     //Convert fx 6444 to e2e4
-    public static String ourMoveToWinboardConverter(String move)
-    {
+    public static String ourMoveToNormalConverter(String move){
         StringBuffer sb = new StringBuffer();
         String[] parts = move.split("");
         String tmp = parts[0];
@@ -118,8 +116,7 @@ public class Utils {
     }
 
     //Convert fx e2e4 to 6444
-    public static String winboardToOurMoveConverter(String move) {
-
+    public static String normalToOurMoveConverter(String move) {
         move=move.toUpperCase();
         StringBuffer sb = new StringBuffer();
         String[] parts = move.split("");
@@ -130,24 +127,20 @@ public class Utils {
             tmp = parts[2];
             parts[2] = parts[3];
             parts[3] = tmp;
-
             sb.append(incomingNumbertoNumberConverter(parts[0]));
             sb.append(incomingLettertoNumberConverter(parts[1]));
             sb.append(incomingNumbertoNumberConverter(parts[2]));
             sb.append(incomingLettertoNumberConverter(parts[3]));
         }
-
         catch(ArrayIndexOutOfBoundsException e){
             return "";
         }
         checkMove(sb.toString());
-
         return sb.toString();
-
     }
     
     //converts enemy move to be correct form
-  	public static String enemyMove(String move){
+  	public static String enemyMoveConverted(String move){
   		String newMove = "";
   		for (int i = 0; i < 4; i++) {
   			String ch = move.substring(i,i+1);

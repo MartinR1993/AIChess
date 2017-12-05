@@ -82,4 +82,3 @@ public class AlphaBetaPruning {
         ChessBoard.kingPositionL=63-kingTemp;
 	}
 }
-

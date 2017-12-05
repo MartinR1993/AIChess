@@ -89,6 +89,7 @@ public class Rating {
 		AlphaBetaPruning.flipBoard();
 		return -(counter+depth*50);
 	}
+	
 	public static int rateAttack(){
 		int counter = 0;
 		int tempPositionC = ChessBoard.kingPositionC;
@@ -112,6 +113,7 @@ public class Rating {
 		}
 		return counter/2;
 	}
+	
 	public static int rateMaterial(){
 		int counter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -130,6 +132,7 @@ public class Rating {
 		}
 		return counter;
 	}
+	
 	public static int rateMoveability(int listLength, int depth, int material){
 		int counter = 0;
 		//6 points per move
@@ -147,6 +150,7 @@ public class Rating {
 		}
 		return counter;
 	}
+	
 	public static int ratePositional(int material){
 		int counter=0;
         for (int i=0;i<64;i++) {

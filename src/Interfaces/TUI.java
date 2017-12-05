@@ -77,8 +77,8 @@ public class TUI {
 		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
 		System.out.print("Write your move: ");
 		String move = scan.nextLine();
-		String ourMove = Utils.winboardToOurMoveConverter(move);
-		ourMove = checkMove(Utils.winboardToOurMoveConverter(move));
+		String ourMove = Utils.normalToOurMoveConverter(move);
+		ourMove = checkMove(Utils.normalToOurMoveConverter(move));
 		boolean valid = validMove(ourMove);
 		if(valid){
 			Moves.makeMove(ourMove);
@@ -105,7 +105,7 @@ public class TUI {
 			long endTime = System.currentTimeMillis();
 			Moves.makeMove(moveEnemy);
 			String moveEnemyConverted;
-			moveEnemyConverted = Utils.ourMoveToWinboardConverter(Utils.enemyMove(moveEnemy));
+			moveEnemyConverted = Utils.ourMoveToNormalConverter(Utils.enemyMoveConverted(moveEnemy));
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
 			AlphaBetaPruning.flipBoard();
@@ -221,9 +221,9 @@ public class TUI {
 		String newMoves = "";
 		for (int i = 0; i < moves.length(); i+=6) {
 			if(moves.charAt(i+4) != ' '){
-				newMoves += "["+Utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
+				newMoves += "["+Utils.ourMoveToNormalConverter(moves.substring(i, i+6))+"] ";
 			}else{
-				newMoves += "["+Utils.ourMoveToWinboardConverter(moves.substring(i, i+6))+"] ";
+				newMoves += "["+Utils.ourMoveToNormalConverter(moves.substring(i, i+6))+"] ";
 			}
 		}
 		return newMoves;
