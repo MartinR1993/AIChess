@@ -242,7 +242,7 @@ thread.start();
         System.out.println(winboardToOurMoveConverter(getLastLine()));
         String valid = validMove(move);
 		if(!(valid.equals(""))){
-			Moves.makeMove(move);
+			Moves.doAMove(move);
             System.out.println("Making move: "+move);
 //			ChessBoard.drawBoard();
 		}
@@ -257,7 +257,7 @@ thread.start();
 		playerTurn = 0;
 		int beta = Integer.MAX_VALUE;
 		int alpha = Integer.MIN_VALUE;
-		AlphaBetaPruning.flipBoard();
+		AlphaBetaPruning.spinBoard();
 		if(endGame()){
 			gameOver = true;
 		}else{
@@ -265,7 +265,7 @@ thread.start();
 			long startTime = System.currentTimeMillis();
 			String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
 			long endTime = System.currentTimeMillis();
-			Moves.makeMove(moveEnemy);
+			Moves.doAMove(moveEnemy);
 
 			String moveEnemyConverted = enemyMove(moveEnemy);
             System.out.println("Enemys move: " + moveEnemyConverted);
@@ -275,7 +275,7 @@ thread.start();
             frame.buttonSend.doClick();
 
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
-			AlphaBetaPruning.flipBoard();
+			AlphaBetaPruning.spinBoard();
 			playerTurn = 1;
 //			ChessBoard.drawBoard();
 		}
@@ -312,7 +312,7 @@ thread.start();
 	//check mate or stale mate message
 	public static boolean endGame(){
 		if(Moves.possibleMoves().length() == 0){
-			if(!Moves.kingSafe()){
+			if(!Moves.isKingSafe()){
 				if(playerTurn == 1){
 					frame.textFromWinboard.append("Enemy won by checkmate!");
 					System.out.println("\nEnemy won by Checkmate!");
@@ -340,7 +340,7 @@ thread.start();
 	
 	//check message
 	public static boolean check(){
-		if(Moves.possibleMoves().length() != 0 && !Moves.kingSafe()){
+		if(Moves.possibleMoves().length() != 0 && !Moves.isKingSafe()){
 			System.out.println("\nEnemy says: Check!");
 		}
 		return false;
@@ -352,7 +352,7 @@ thread.start();
 		playAsWhite = scan.nextInt();
 		if(playAsWhite == 1 || playAsWhite == 2){
 			if(playAsWhite == 2){
-				AlphaBetaPruning.flipBoard();
+				AlphaBetaPruning.spinBoard();
 			}
 		}else{
 			System.out.println("Not legal choice. Try again!");

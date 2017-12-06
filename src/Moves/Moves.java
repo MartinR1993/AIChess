@@ -4,7 +4,7 @@ import Rating.Rating;
 
 public class Moves {
 
-	    public static void makeMove(String move) {
+	    public static void doAMove(String move) {
 			//regular moves
 			if(move.charAt(5) != 'P'){
 				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3), Captured-piece(4), Space(5)
@@ -22,7 +22,7 @@ public class Moves {
 			}
 		}
 		
-		public static void undoMove(String move) {
+		public static void undoAMove(String move) {
 			//regular moves
 			if(move.charAt(5) != 'P'){
 				//string : oldXposition(0),oldYposition(1),newXpostition(2),newYposition(3),Captured-piece(4), Space(5)
@@ -44,17 +44,17 @@ public class Moves {
 		String list = "";
 		for (int i = 0; i < 64; i++) {
 			switch (ChessBoard.board[i/8][i%8]){
-			case "Q" : list+=possibleQ(i);
+			case "Q" : list += possibleQ(i);
 			break;
-			case "K" : list+=possibleK(i);
+			case "K" : list += possibleK(i);
 			break;
-			case "B" : list+=possibleB(i);
+			case "B" : list += possibleB(i);
 			break;
-			case "R" : list+=possibleR(i);
+			case "R" : list += possibleR(i);
 			break;
-			case "P" : list+=possibleP(i);
+			case "P" : list += possibleP(i);
 			break;
-			case "A" : list+=possibleA(i);
+			case "A" : list += possibleA(i);
 			break;
 			}
 		}
@@ -75,7 +75,7 @@ public class Moves {
 						ChessBoard.board[row-1+j/3][col-1+j%3] = "A";
 						int kingTemp = ChessBoard.kingPositionC;
 						ChessBoard.kingPositionC = i+(j/3)*8+j%3-9;
-						if(kingSafe()) {
+						if(isKingSafe()) {
 							list = list+row+col+(row-1+j/3)+(col-1+j%3)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "A";
@@ -105,7 +105,7 @@ public class Moves {
 							oldPiece = ChessBoard.board[row+temp*j][col+temp*k];
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "Q";
-							if(kingSafe()) {
+							if(isKingSafe()) {
 								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "Q";
@@ -116,7 +116,7 @@ public class Moves {
 							oldPiece = ChessBoard.board[row+temp*j][col+temp*k];
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "Q";
-							if(kingSafe()) {
+							if(isKingSafe()) {
 								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "Q";
@@ -147,7 +147,7 @@ public class Moves {
 							oldPiece = ChessBoard.board[row+temp*j][col+temp*k];
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "B";
-							if(kingSafe()) {
+							if(isKingSafe()) {
 								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "B";
@@ -158,7 +158,7 @@ public class Moves {
 							oldPiece = ChessBoard.board[row+temp*j][col+temp*k];
 							ChessBoard.board[row][col] = " ";
 							ChessBoard.board[row+temp*j][col+temp*k] = "B";
-							if(kingSafe()) {
+							if(isKingSafe()) {
 								list = list+row+col+(row+temp*j)+(col+temp*k)+oldPiece+" ";
 							}
 							ChessBoard.board[row][col] = "B";
@@ -184,7 +184,7 @@ public class Moves {
 						oldPiece = ChessBoard.board[row+j][col+k*2];
 						ChessBoard.board[row][col] = " ";
 						ChessBoard.board[row+j][col+k*2] = "K";
-						if(kingSafe()) {
+						if(isKingSafe()) {
 							list = list+row+col+(row+j)+(col+k*2)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "K";
@@ -197,7 +197,7 @@ public class Moves {
 						oldPiece = ChessBoard.board[row+j*2][col+k];
 						ChessBoard.board[row][col] = " ";
 						ChessBoard.board[row+j*2][col+k] = "K";
-						if(kingSafe()) {
+						if(isKingSafe()) {
 							list = list+row+col+(row+j*2)+(col+k)+oldPiece+" ";
 						}
 						ChessBoard.board[row][col] = "K";
@@ -222,7 +222,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row][col+temp*j];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row][col+temp*j] = "R";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row)+(col+temp*j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
@@ -233,7 +233,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row][col+temp*j];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row][col+temp*j] = "R";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row)+(col+temp*j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
@@ -247,7 +247,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row+temp*j][col];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row+temp*j][col] = "R";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row+temp*j)+(col)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
@@ -258,7 +258,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row+temp*j][col];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row+temp*j][col] = "R";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row+temp*j)+(col)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "R";
@@ -282,7 +282,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row-1][col+j];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row-1][col+j] = "P";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row-1)+(col+j)+oldPiece+" ";
 					}
 					ChessBoard.board[row][col] = "P";
@@ -295,7 +295,7 @@ public class Moves {
 					oldPiece = ChessBoard.board[row-1][col+j];
 					ChessBoard.board[row][col] = " ";
 					ChessBoard.board[row-1][col+j] = "Q";
-					if(kingSafe()) {
+					if(isKingSafe()) {
 						list = list+row+col+(row-1)+(col+j)+oldPiece+"P";
 					}
 					ChessBoard.board[row][col] = "P";
@@ -309,7 +309,7 @@ public class Moves {
 				oldPiece = ChessBoard.board[row-1][col];
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-1][col] = "P";
-				if(kingSafe()) {
+				if(isKingSafe()) {
 					list = list+row+col+(row-1)+(col)+oldPiece+" ";
 				}
 				ChessBoard.board[row][col] = "P";
@@ -322,7 +322,7 @@ public class Moves {
 				oldPiece = ChessBoard.board[row-1][col];
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-1][col] = "Q";
-				if(kingSafe()) {
+				if(isKingSafe()) {
 					list = list+row+col+(row-1)+(col)+oldPiece+"P";
 				}
 				ChessBoard.board[row][col] = "P";
@@ -335,7 +335,7 @@ public class Moves {
 				oldPiece = ChessBoard.board[row-2][col];
 				ChessBoard.board[row][col] = " ";
 				ChessBoard.board[row-2][col] = "P";
-				if(kingSafe()) {
+				if(isKingSafe()) {
 					list = list+row+col+(row-2)+(col)+oldPiece+" ";
 				}
 				ChessBoard.board[row][col] = "P";
@@ -345,12 +345,12 @@ public class Moves {
 		return list;
 	}
 	
-	public static String sortMoves(String list) {
+	public static String heuristic(String list) {
         int[] score = new int [list.length()/6];
         for (int i = 0; i < list.length(); i += 6) {
-            makeMove(list.substring(i, i+6));
+            doAMove(list.substring(i, i+6));
             score[i/6] =- Rating.rating(-1, 0);
-            undoMove(list.substring(i, i+6));
+            undoAMove(list.substring(i, i+6));
         }
         String newListA = "", newListB = list;
         for (int i = 0; i < Math.min(6, list.length()/6); i++) {//first few moves only
@@ -365,7 +365,7 @@ public class Moves {
         return newListA+newListB;
     }
 	
-	public static boolean kingSafe() {
+	public static boolean isKingSafe() {
 		//Bishop/Queen
 		int temp = 1;
 		for (int i = -1; i <= 1; i+=2){

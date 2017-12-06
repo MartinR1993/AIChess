@@ -14,19 +14,19 @@ public class AlphaBetaPruning {
 			return move+(Rating.rating(list.length(), depth)*(player*2-1)); 
 		}
 		//Heuristic
-		list=Moves.sortMoves(list);
+		list=Moves.heuristic(list);
 		
 		//either 1 or 0
 		player=1-player;
 
 		//the actual algorithm
 		for (int i = 0; i < list.length(); i+=6) {
-			Moves.makeMove(list.substring(i,i+6));
-			flipBoard();
+			Moves.doAMove(list.substring(i,i+6));
+			spinBoard();
 			String returnString = alphaBeta(depth-1, beta, alpha, list.substring(i,i+6), player);
 			int value = Integer.valueOf(returnString.substring(6));
-			flipBoard();
-			Moves.undoMove(list.substring(i,i+6));
+			spinBoard();
+			Moves.undoAMove(list.substring(i,i+6));
 			//minimizing
 			if(player == 0) {
 				if(value <= beta){
@@ -60,8 +60,8 @@ public class AlphaBetaPruning {
 			return move + alpha;
 		}
 	}
-
-	public static void flipBoard() {
+	
+	public static void spinBoard() {
 		String temp;
         for (int i=0;i<32;i++) {
             int r=i/8, c=i%8;

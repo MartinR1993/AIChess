@@ -72,49 +72,69 @@ public class Rating {
 	public static int rating(int list, int depth){
 		int counter = 0;
 		//White
-		int material = rateMaterial();
-		counter += rateAttack();
+		int material = materialRating();
+		counter += attackRating();
 		counter += material;
-		counter += rateMaterial();
-		counter += rateMoveability(list, depth, material);
-		counter += ratePositional(material);
-		AlphaBetaPruning.flipBoard();
+		counter += materialRating();
+		counter += moveabilityRating(list, depth, material);
+		counter += positionalRating(material);
+		AlphaBetaPruning.spinBoard();
 		//Black
-		material = rateMaterial();
-		counter -= rateAttack();
+		material = materialRating();
+		counter -= attackRating();
 		counter -= material;
-		counter -= rateMaterial();
-		counter -= rateMoveability(list, depth, material);
-		counter -= ratePositional(material);
-		AlphaBetaPruning.flipBoard();
+		counter -= materialRating();
+		counter -= moveabilityRating(list, depth, material);
+		counter -= positionalRating(material);
+		AlphaBetaPruning.spinBoard();
 		return -(counter+depth*50);
 	}
 	
-	public static int rateAttack(){
+	public static int attackRating(){
 		int counter = 0;
-		int tempPositionC = ChessBoard.kingPositionC;
+		int temp = ChessBoard.kingPositionC;
 		for (int i = 0; i < 64; i++) {
 			switch (ChessBoard.board[i/8][i%8]) {
-			case "P": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 64;}}
+			case "P": {ChessBoard.kingPositionC = i; 
+						if(!Moves.isKingSafe()){
+							counter -= 64;
+							}
+						}
 				break;
-			case "K": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 300;}}
+			case "K": {ChessBoard.kingPositionC = i; 
+						if(!Moves.isKingSafe()){
+							counter -= 300;
+							}
+						}
 				break;
-			case "B": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 300;}}
+			case "B": {ChessBoard.kingPositionC = i;
+						if(!Moves.isKingSafe()){
+							counter -= 300;
+							}
+						}
 				break;
-			case "R": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 500;}}
+			case "R": {ChessBoard.kingPositionC = i;
+						if(!Moves.isKingSafe()){
+							counter -= 500;
+							}
+						}
 				break;
-			case "Q": {ChessBoard.kingPositionC = i; if(!Moves.kingSafe()){counter -= 900;}}
+			case "Q": {ChessBoard.kingPositionC = i;
+						if(!Moves.isKingSafe()){
+							counter -= 900;
+							}
+						}
 				break;
 			}
 		}
-		ChessBoard.kingPositionC = tempPositionC;
-		if(!Moves.kingSafe()){
+		ChessBoard.kingPositionC = temp;
+		if(!Moves.isKingSafe()){
 			counter -= 200;
 		}
 		return counter/2;
 	}
 	
-	public static int rateMaterial(){
+	public static int materialRating(){
 		int counter = 0;
 		for (int i = 0; i < 64; i++) {
 			switch (ChessBoard.board[i/8][i%8]) {
@@ -133,14 +153,14 @@ public class Rating {
 		return counter;
 	}
 	
-	public static int rateMoveability(int listLength, int depth, int material){
+	public static int moveabilityRating(int listLength, int depth, int material){
 		int counter = 0;
 		//6 points per move
 		counter += listLength;
 		//checkmate or stalemate
 		if(listLength==0) {
 			//if checkmate/win
-			if(!Moves.kingSafe()){
+			if(!Moves.isKingSafe()){
 				counter += -200000*depth;
 			} 
 			//if stalemate/tie
@@ -151,26 +171,26 @@ public class Rating {
 		return counter;
 	}
 	
-	public static int ratePositional(int material){
+	public static int positionalRating(int material){
 		int counter=0;
-        for (int i=0;i<64;i++) {
+        for (int i = 0; i < 64; i++) {
         	switch (ChessBoard.board[i/8][i%8]) {
-        	case "P": counter+=pawnBoard[i/8][i%8];
+        	case "P": counter += pawnBoard[i/8][i%8];
         		break;
-        	case "R": counter+=rookBoard[i/8][i%8];
+        	case "R": counter += rookBoard[i/8][i%8];
         		break;
-        	case "K": counter+=knightBoard[i/8][i%8];
+        	case "K": counter += knightBoard[i/8][i%8];
         		break;
-        	case "B": counter+=bishopBoard[i/8][i%8];
+        	case "B": counter += bishopBoard[i/8][i%8];
         		break;
-        	case "Q": counter+=queenBoard[i/8][i%8];
+        	case "Q": counter += queenBoard[i/8][i%8];
         		break;
-        	case "A": if (material>=1750) {
-        		counter+=kingMidBoard[i/8][i%8]; 
-        		counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*10;
+        	case "A": if (material >= 1750) {
+        		counter += kingMidBoard[i/8][i%8]; 
+        		counter += Moves.possibleA(ChessBoard.kingPositionC).length()*10;
         	}else{
-        		counter+=kingEndBoard[i/8][i%8]; 
-        		counter+=Moves.possibleA(ChessBoard.kingPositionC).length()*30;
+        		counter += kingEndBoard[i/8][i%8]; 
+        		counter += Moves.possibleA(ChessBoard.kingPositionC).length()*30;
         	}
         		break;
         	}

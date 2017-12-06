@@ -81,7 +81,7 @@ public class TUI {
 		ourMove = checkMove(Utils.normalToOurMoveConverter(move));
 		boolean valid = validMove(ourMove);
 		if(valid){
-			Moves.makeMove(ourMove);
+			Moves.doAMove(ourMove);
 			ChessBoard.drawBoard();	
 		}
 		else{
@@ -95,7 +95,7 @@ public class TUI {
 		playerTurn = 0;
 		int beta = Integer.MAX_VALUE;
 		int alpha = Integer.MIN_VALUE;
-		AlphaBetaPruning.flipBoard();
+		AlphaBetaPruning.spinBoard();
 		if(endGame()){
 			gameOver = true;
 		}else{
@@ -103,12 +103,12 @@ public class TUI {
 			long startTime = System.currentTimeMillis();
 			String moveEnemy = AlphaBetaPruning.alphaBeta(AlphaBetaPruning.globalDepth, beta, alpha, " ", 0);
 			long endTime = System.currentTimeMillis();
-			Moves.makeMove(moveEnemy);
+			Moves.doAMove(moveEnemy);
 			String moveEnemyConverted;
 			moveEnemyConverted = Utils.ourMoveToNormalConverter(Utils.enemyMoveConverted(moveEnemy));
 			System.out.println("Enemys move: " + moveEnemyConverted);
 			System.out.println("It took " + (endTime-startTime) + " milliseconds!");
-			AlphaBetaPruning.flipBoard();
+			AlphaBetaPruning.spinBoard();
 			ChessBoard.drawBoard();
 			playerTurn = 1;
 		}
@@ -118,7 +118,7 @@ public class TUI {
 	//check mate or stale mate message
 	public static boolean endGame(){
 		if(Moves.possibleMoves().length() == 0){
-			if(!Moves.kingSafe()){
+			if(!Moves.isKingSafe()){
 				if(playerTurn == 1){
 					System.out.println("\nEnemy won by Checkmate!");
 					return true;
@@ -142,7 +142,7 @@ public class TUI {
 	
 	//check message
 	public static boolean check(){
-		if(Moves.possibleMoves().length() != 0 && !Moves.kingSafe()){
+		if(Moves.possibleMoves().length() != 0 && !Moves.isKingSafe()){
 			System.out.println("\nEnemy says: Check!");
 		}
 		return false;
@@ -154,7 +154,7 @@ public class TUI {
 		playAsWhite = scan.nextInt();
 		if(playAsWhite == 1 || playAsWhite == 2){
 			if(playAsWhite == 2){
-				AlphaBetaPruning.flipBoard();
+				AlphaBetaPruning.spinBoard();
 				return false;
 			}
 		}else{
