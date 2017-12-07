@@ -11,12 +11,16 @@ public class AlphaBetaPruning {
 
 		//Board evaluation
 		if(depth == 0 || list.length() == 0){
-			return move+(Rating.rating(list.length(), depth)*(player*2-1)); 
+			if(player == 0){
+				return move + (Rating.rating(list.length(), depth)*(-1)); 
+			}else{
+				return move + (Rating.rating(list.length(), depth)); 
+			}
 		}
 		//Heuristic
 		list=Moves.heuristic(list);
 		
-		//either 1 or 0
+		//either 1(user) or 0(AI)
 		player=1-player;
 
 		//the actual algorithm

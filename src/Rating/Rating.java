@@ -73,19 +73,15 @@ public class Rating {
     //The rating summed up
 	public static int rating(int list, int depth){
 		int counter = 0;
-		//White
 		int material = materialRating();
 		counter += attackRating();
 		counter += material;
-		counter += materialRating();
 		counter += moveabilityRating(list, depth, material);
 		counter += positionalRating(material);
 		AlphaBetaPruning.spinBoard();
-		//Black
 		material = materialRating();
 		counter -= attackRating();
 		counter -= material;
-		counter -= materialRating();
 		counter -= moveabilityRating(list, depth, material);
 		counter -= positionalRating(material);
 		AlphaBetaPruning.spinBoard();
@@ -100,7 +96,7 @@ public class Rating {
 			switch (ChessBoard.board[i/8][i%8]) {
 			case "P": {ChessBoard.kingPositionC = i; 
 						if(!Moves.isKingSafe()){
-							counter -= 64;
+							counter -= 100;
 							}
 						}
 				break;
