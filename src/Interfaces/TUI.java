@@ -48,11 +48,10 @@ public class TUI {
 			}
 		}else{
 			//continue game
-			System.out.println(boardString.substring(boardString.length()-2));
-			if(boardString.substring(boardString.length()-2).startsWith("u")){
+			if(boardString.substring(boardString.length()-1).startsWith("u")){
 				playerTurn = 0;
 				whoStart(1);
-			}else if(boardString.substring(boardString.length()-2).startsWith("e")){
+			}else if(boardString.substring(boardString.length()-1).startsWith("e")){
 				playerTurn = 1;
 				whoStart(2);
 			}
@@ -167,6 +166,7 @@ public class TUI {
 		int continueChoice = scan.nextInt();
 		if(continueChoice == 1 || continueChoice == 2){
 			if(continueChoice == 1){
+                                System.out.println("Insert FEN String:");
 				boardString = scan.next();
 				boardString += " " + scan.next();
 				int aC = scan.nextInt();
