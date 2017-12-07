@@ -366,12 +366,19 @@ public class Moves {
             undoAMove(list.substring(i, i+6));
         }
         String newListA = "", newListB = list;
-        for (int i = 0; i < Math.min(6, list.length()/6); i++) {//first few moves only
-            int max =- 1000000, maxLocation = 0;
+        //First few moves only, max 6 moves.
+        for (int i = 0; i < Math.min(6, list.length()/6); i++) {
+            int max =- 1000000;
+            int maxLocation = 0;
             for (int j = 0; j < list.length()/6; j++) {
-                if (score[j] > max) {max = score[j]; maxLocation = j;}
+                if (score[j] > max) {
+                	max = score[j]; 
+                	maxLocation = j;
+                }
             }
+            //Sets the best score to negative, so it don't being searched again
             score[maxLocation] =- 1000000;
+            //Adds best move to new list and delete from old list
             newListA += list.substring(maxLocation*6,maxLocation*6+6);
             newListB = newListB.replace(list.substring(maxLocation*6,maxLocation*6+6), "");
         }
