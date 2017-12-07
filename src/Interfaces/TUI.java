@@ -16,6 +16,7 @@ public class TUI {
 	public static boolean asWhite;
 	public static String boardString;
 
+        //Method to start the game/program in TUI
 	public static void playgame(){
 
 		//Introduction
@@ -58,38 +59,33 @@ public class TUI {
 		}
 	}
 	
-	//Check with the possibleMove list
-	public static boolean validMove(String move){
-		String possibleMoves = Moves.possibleMoves();
-		for (int i = 0; i < possibleMoves.length(); i+=6) {
-			if(move.equals(possibleMoves.substring(i, i+6))){
-				return true;
-			}
-		}
-		return false;
-	}
 
-	public static void userTurn(){
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		playerTurn = 1;
-		check();
-		System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
-		System.out.print("Write your move: ");
-		String move = scan.nextLine();
-		String ourMove = Utils.normalToOurMoveConverter(move);
-		ourMove = checkMove(Utils.normalToOurMoveConverter(move));
-		boolean valid = validMove(ourMove);
-		if(valid){
-			Moves.doAMove(ourMove);
-			ChessBoard.drawBoard();	
-		}
-		else{
-			System.out.println("Unvalid move. try again!");
-			userTurn();
-		}
-		playerTurn = 0;
-	}
+        public static void userTurn(){
+            @SuppressWarnings("resource")
+                    Scanner scan = new Scanner(System.in);
+            playerTurn = 1;
+            String ourMove = "";
+            boolean valid = false;
+            check();
+            System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
+            System.out.print("Write your move: ");
+            String move = scan.nextLine();
+            try {
+                ourMove = Utils.normalToOurMoveConverter(move);
+                ourMove = checkMove(Utils.normalToOurMoveConverter(move));
+                valid = Moves.validMove(ourMove);
+            } catch (Exception e) {
+            }
+            if(valid){
+                Moves.doAMove(ourMove);
+                ChessBoard.drawBoard();
+            }
+            else{
+                System.out.println("Unvalid move. try again!");
+                userTurn();
+            }
+            playerTurn = 0;
+        }
 	
 	public static void enemyTurn(){
 		playerTurn = 0;
