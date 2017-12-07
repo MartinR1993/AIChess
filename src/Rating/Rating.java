@@ -5,6 +5,7 @@ import Moves.AlphaBetaPruning;
 import Moves.Moves;
 
 public class Rating {
+			//The different pieces point tables
 	 		static int pawnBoard[][]={
 		        { 0,  0,  0,  0,  0,  0,  0,  0},
 		        {50, 50, 50, 50, 50, 50, 50, 50},
@@ -68,7 +69,8 @@ public class Rating {
 		        {-30,-10, 20, 30, 30, 20,-10,-30},
 		        {-30,-30,  0,  0,  0,  0,-30,-30},
 		        {-50,-30,-30,-30,-30,-30,-30,-50}};
-		    
+	
+    //The rating summed up
 	public static int rating(int list, int depth){
 		int counter = 0;
 		//White
@@ -90,6 +92,7 @@ public class Rating {
 		return -(counter+depth*50);
 	}
 	
+	//Rating the potential danger for attacks
 	public static int attackRating(){
 		int counter = 0;
 		int temp = ChessBoard.kingPositionC;
@@ -134,6 +137,7 @@ public class Rating {
 		return counter/2;
 	}
 	
+	//Rating of the materials on board
 	public static int materialRating(){
 		int counter = 0;
 		for (int i = 0; i < 64; i++) {
@@ -153,6 +157,7 @@ public class Rating {
 		return counter;
 	}
 	
+	//Rating of the moveability of pieces on board
 	public static int moveabilityRating(int listLength, int depth, int material){
 		int counter = 0;
 		//6 points per move
@@ -171,6 +176,7 @@ public class Rating {
 		return counter;
 	}
 	
+	//Rating of the position of pieces on board
 	public static int positionalRating(int material){
 		int counter=0;
         for (int i = 0; i < 64; i++) {

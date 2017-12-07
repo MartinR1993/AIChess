@@ -22,15 +22,14 @@ public class TUI {
 		//Introduction
 		System.out.println("Welcome to this chess game, made by Group 1!");
 
-		//continue game
 		System.out.println("Do you want to continue a previous game. \n1. Yes\n2. No");
 		boolean boo = continueGame();
 		if(!boo){
-			//Bigger case king position
+			//Case king position
 			while(!"A".equals(ChessBoard.board[ChessBoard.kingPositionC/8][ChessBoard.kingPositionC%8])) {
 				ChessBoard.kingPositionC++;
 			}
-			//Lower case king position
+			//Lowercase king position
 			while(!"a".equals(ChessBoard.board[ChessBoard.kingPositionL/8][ChessBoard.kingPositionL%8])) {
 				ChessBoard.kingPositionL++;
 			}
@@ -48,6 +47,7 @@ public class TUI {
 				whoStart(2);
 			}
 		}else{
+			//continue game
 			System.out.println(boardString.substring(boardString.length()-2));
 			if(boardString.substring(boardString.length()-2).startsWith("u")){
 				playerTurn = 0;
@@ -58,34 +58,33 @@ public class TUI {
 			}
 		}
 	}
-	
 
-        public static void userTurn(){
-            @SuppressWarnings("resource")
-                    Scanner scan = new Scanner(System.in);
-            playerTurn = 1;
-            String ourMove = "";
-            boolean valid = false;
-            check();
-            System.out.println("\nPossible moves: " + possibleMoves(Moves.possibleMoves()));
-            System.out.print("Write your move: ");
-            String move = scan.nextLine();
-            try {
-                ourMove = Utils.normalToOurMoveConverter(move);
-                ourMove = checkMove(Utils.normalToOurMoveConverter(move));
-                valid = Moves.validMove(ourMove);
-            } catch (Exception e) {
-            }
-            if(valid){
-                Moves.doAMove(ourMove);
-                ChessBoard.drawBoard();
-            }
-            else{
-                System.out.println("Unvalid move. try again!");
-                userTurn();
-            }
-            playerTurn = 0;
-        }
+	public static void userTurn(){
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		playerTurn = 1;
+		String ourMove = "";
+		boolean valid = false;
+		checkMessage();
+		System.out.println("\nPossible moves: " + printPossibleMoves(Moves.possibleMoves()));
+		System.out.print("Write your move: ");
+		String move = scan.nextLine();
+		try {
+			ourMove = Utils.normalToOurMoveConverter(move);
+			ourMove = checkAMove(Utils.normalToOurMoveConverter(move));
+			valid = Moves.validMove(ourMove);
+		} catch (Exception e) {
+		}
+		if(valid){
+			Moves.doAMove(ourMove);
+			ChessBoard.drawBoard();
+		}
+		else{
+			System.out.println("Unvalid move. try again!");
+			userTurn();
+		}
+		playerTurn = 0;
+	}
 	
 	public static void enemyTurn(){
 		playerTurn = 0;
@@ -137,13 +136,14 @@ public class TUI {
 	}
 	
 	//check message
-	public static boolean check(){
+	public static boolean checkMessage(){
 		if(Moves.possibleMoves().length() != 0 && !Moves.isKingSafe()){
 			System.out.println("\nEnemy says: Check!");
 		}
 		return false;
 	}
 	
+	//Choose about being white or black
 	public static boolean playerAsWhite(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -159,7 +159,8 @@ public class TUI {
 		}
 		return true;
 	}
-        
+    
+	//Use the FEN string to continue a game
 	public static boolean continueGame(){
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
@@ -213,7 +214,7 @@ public class TUI {
 	}
 	
 	//Makes the possibleMoves list better looking with spaces
-	public static String possibleMoves(String moves){
+	public static String printPossibleMoves(String moves){
 		String newMoves = "";
 		for (int i = 0; i < moves.length(); i+=6) {
 			if(moves.charAt(i+4) != ' '){
@@ -225,7 +226,8 @@ public class TUI {
 		return newMoves;
 	}
 	
-	public static String checkMove(String move) {
+	//This method check if a move is a normal move or a pawnpromotion move and adds the rest to the move string
+	public static String checkAMove(String move) {
 		//Pawnpromotion
 		if(ChessBoard.board[Character.getNumericValue((move.charAt(0)))][Character.getNumericValue((move.charAt(1)))] == "P" && Character.getNumericValue((move.charAt(0))) == 1){
 			if(ChessBoard.board[Character.getNumericValue((move.charAt(2)))][Character.getNumericValue((move.charAt(3)))] != " "){

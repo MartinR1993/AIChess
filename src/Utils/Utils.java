@@ -1,6 +1,6 @@
 package Utils;
 
-import static Interfaces.TUI.checkMove;
+import static Interfaces.TUI.checkAMove;
 
 /**
  * Created by as on 12/5/17.
@@ -135,7 +135,7 @@ public class Utils {
         catch(ArrayIndexOutOfBoundsException e){
             return "";
         }
-        checkMove(sb.toString());
+        checkAMove(sb.toString());
         return sb.toString();
     }
     
