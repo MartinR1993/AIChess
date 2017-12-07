@@ -65,24 +65,35 @@ public class AlphaBetaPruning {
 		}
 	}
 	
-	public static void spinBoard() {
-		String temp;
-        for (int i=0;i<32;i++) {
-            int r=i/8, c=i%8;
-            if (Character.isUpperCase(ChessBoard.board[r][c].charAt(0))) {
-                temp=ChessBoard.board[r][c].toLowerCase();
-            } else {
-                temp=ChessBoard.board[r][c].toUpperCase();
+        // spinBoard is used to spin the board
+        public static void spinBoard() {
+            // String for saving temp piece
+            String temp;
+            
+            //loop swapping all the pieces on the board
+            for (int i=0;i<32;i++) {
+                int r=i/8, c=i%8;
+                
+                // saves the removed piece
+                if (Character.isUpperCase(ChessBoard.board[r][c].charAt(0))) {
+                    temp=ChessBoard.board[r][c].toLowerCase();
+                } else {
+                    temp=ChessBoard.board[r][c].toUpperCase();
+                }
+                
+                // update that piece 
+                if (Character.isUpperCase(ChessBoard.board[7-r][7-c].charAt(0))) {
+                    ChessBoard.board[r][c]=ChessBoard.board[7-r][7-c].toLowerCase();
+                } else {
+                    ChessBoard.board[r][c]=ChessBoard.board[7-r][7-c].toUpperCase();
+                }
+                
+                //inserts the saved piece at the new position
+                ChessBoard.board[7-r][7-c]=temp;
             }
-            if (Character.isUpperCase(ChessBoard.board[7-r][7-c].charAt(0))) {
-            	ChessBoard.board[r][c]=ChessBoard.board[7-r][7-c].toLowerCase();
-            } else {
-            	ChessBoard.board[r][c]=ChessBoard.board[7-r][7-c].toUpperCase();
-            }
-            ChessBoard.board[7-r][7-c]=temp;
+            //updating king position values
+            int kingTemp=ChessBoard.kingPositionC;
+            ChessBoard.kingPositionC=63-ChessBoard.kingPositionL;
+            ChessBoard.kingPositionL=63-kingTemp;
         }
-        int kingTemp=ChessBoard.kingPositionC;
-        ChessBoard.kingPositionC=63-ChessBoard.kingPositionL;
-        ChessBoard.kingPositionL=63-kingTemp;
-	}
 }
